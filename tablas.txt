@@ -1,0 +1,38 @@
+Aquí hay algunas posibles tablas para una base de datos de una biblioteca:
+
+Tabla de libros:
+ID del libro (clave principal)
+Título
+Autor
+ISBN
+Editor
+Fecha de publicación
+Número de páginas
+Categoría
+Tabla de ejemplares:
+ID del ejemplar (clave principal)
+ID del libro (clave externa)
+Estado (disponible, prestado, en reparación, perdido, etc.)
+Ubicación (estante, sección, etc.)
+Fecha de adquisición
+Fecha de última revisión
+Tabla de usuarios:
+ID del usuario (clave principal)
+Nombre
+Apellido
+Fecha de nacimiento
+Dirección
+Número de teléfono
+Correo electrónico
+Tabla de préstamos:
+ID del préstamo (clave principal)
+ID del usuario (clave externa)
+ID del ejemplar (clave externa)
+Fecha de préstamo
+Fecha de devolución (si corresponde)
+Tabla de multas:
+ID de multa (clave principal)
+ID del préstamo (clave externa)
+Fecha de emisión
+Monto de la multa
+Estado (pagado, pendiente, etc.)

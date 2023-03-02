@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+{% include 'includes/header.html' %}
+ 
+
+
+
+  {% comment %} 
+  <ul>
+    {% for prestamo in object_list %}
+      <li>{{ prestamo.ejemplar.libro.titulo }} - {{ prestamo.usuario.nombre }} {{ prestamo.usuario.apellido }}</li>
+    {% empty %}
+      <li>No hay préstamos vencidos.</li>
+    {% endfor %}
+  </ul> {% endcomment %}
+
+  <h1>Prestamos vencidos para el dia de hoy</h1>
+  <div class="card-body mx-auto">
+    {% for prestamo in object_list %}
+        <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+
+          {% if prestamo.ejemplar.libro.avatar %}
+
+          <img src="{{ prestamo.ejemplar.libro.avatar.url }}" class="img-fluid">
+          {% else %}
+          <img src="{% static 'img/logo.png' %}" alt=""
+              class="img-fluid">
+          {% endif %}
+
+          <div class="card-body">
+            <h5 class="card-title">{{prestamo.ejemplar.libro.titulo}}</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{prestamo.usuario.nombre}} {{prestamo.usuario.apellido}}</li>
+            <li class="list-group-item">{{prestamo.usuario.cedula}}</li>
+          </ul>
+
+        </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}
+    
