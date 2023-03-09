@@ -6,7 +6,7 @@ admin.site.register(Ejemplar)
 admin.site.register(Libro)
 admin.site.register(Multa)
 # admin.site.register(Prestamo)
-admin.site.register(Usuario)
+
 
 class PrestamoAdmin(admin.ModelAdmin):
     list_display=(      
@@ -24,4 +24,26 @@ class PrestamoAdmin(admin.ModelAdmin):
   
  
 admin.site.register(Prestamo, PrestamoAdmin)
+
+
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display=( 
+        'cedula',     
+         'nombre',    
+        'apellido',        
+        'direccion',
+        'telefono',   
+        'correo_electronico',   
+        'seccion',
+    
+         
+               
+         
+    )
+    
+    search_fields=('cedula','nombre','seccion',)    
+    list_filter=('nombre', 'cedula') 
+    
+    
+admin.site.register(Usuario, UsuarioAdmin)
 
