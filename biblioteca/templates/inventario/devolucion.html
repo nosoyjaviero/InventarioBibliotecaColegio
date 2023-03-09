@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<!--
+<div class="card text-center mx-auto">
+    <div class="card-body mx-auto">
+        <form method="post"  enctype="multipart/form-data" > {% csrf_token %}           
+            <h3>¿Desea devolver el libro?</h3>
+            {% bootstrap_form form layout='vertical' button_type='submit' button_css_classes='btn btn-success' exclude="usuario, ejemplar, fecha_devolucion, fecha_prestamo"%}
+            {% comment %} {% bootstrap_form form  %} {% endcomment %}
+            <button type="submit" class="btn btn-success">Devolver</button>
+        </form>
+    </div>
+</div> 
+-->
+
+
+<div class="card text-center mx-auto">                                 
+    <div class="card-body mx-auto">
+    
+    <form method="post" enctype="multipart/form-data" >    {% csrf_token %}
+        {% bootstrap_form form button_type='submit' button_css_classes='btn btn-success' %}
+        <button type="submit" class="btn btn-success">Editar</button>
+    </form>
+    </div>
+    </div>
+    
+<!--
+ <div class="card text-center mx-auto">
+    <div class="card-body mx-auto">
+        <form method="post"enctype="multipart/form-data" class=""> {% csrf_token %}           
+            <h3>¿Desea devolver el libro?</h3>
+            {{ form.devuelto|add_class:"form-control"}}
+            <button type="submit" class="btn btn-success">Devolver</button>
+        </form>
+    </div>
+</div> 
+
+
+es lo mimo pero con mas codigo
+ <div class="card text-center mx-auto">
+    <div class="card-body mx-auto">
+        <form method="post"> {% csrf_token %}           
+            <h3>¿Desea devolver el libro?</h3>
+            <div class="form-group">
+                {{ form.devuelto|add_class:"form-control" }}
+            </div>
+            <button type="submit" class="btn btn-success">Devolver</button>
+        </form>
+    </div>
+</div> 
+
+
+es lo mimo pero con mas codigo
+<div class="card text-center mx-auto">
+    <div class="card-body mx-auto">
+        <form method="post">{% csrf_token %}
+            <h3>¿Desea actualizar la fecha de devolución ?</h3>            
+            <div class="form-group">
+                {{ form.devuelto |add_class:"form-control" }}
+            </div>            
+            <button type="submit" class="btn btn-success">Devolver</button>             
+        </form>
+    </div>
+</div>
+-->
+
+{% endblock %}

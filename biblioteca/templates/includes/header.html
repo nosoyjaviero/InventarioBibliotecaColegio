@@ -1,73 +1,58 @@
 {% load static %}
 
 
-
-  
-
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    
- <a class="navbar-brand" href="{% url 'app_inventario:inicio' %}">
-  <img src="{% static 'img/logo.png' %} " alt="Bootstrap" width="30" height="24">Biblioteca
-</a> 
+    <a class="navbar-brand" href="{% url 'app_inventario:inicio' %}">
+      <img src="{% static 'img/Logo.jpg' %} " alt="Bootstrap" width="30" height="24">Biblioteca
+    </a> 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button>    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="nav nav-pills nav-fill">
-
-        {% comment %} <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Active</a>
-        </li> {% endcomment %}
-
-        
-        {% comment %} <li class="nav-item">
-          <a class="nav-link" href="#">Much longer nav link</a>
-        </li> {% endcomment %}
-
+      <ul class="nav nav-pills nav-fill navbar-nav ms-auto">        
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Informacion
+          <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Inventario
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="nav-link active" aria-current="page" href="{% url 'app_inventario:libros' %}">Libros</a></li>
-            <li><a class="dropdown-item" href="#">Usuario</a></li>
+          <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+            <li><a class="nav-link  text-light" aria-current="page" href="{% url 'app_inventario:libros' %}">Libros</a></li>
+            <li><a class="nav-link  text-light" aria-current="page" href="{% url 'app_inventario:ejemplares' %}">Ejemplares</a></li>       
+            <li><hr class="dropdown-divider text-light"></li>            
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Prestamos
+          </a>
+          <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+            <li><a class="nav-link  text-light" aria-current="page" href="{% url 'app_inventario:prestamos' %}">Todos los prestamos</a></li>
+            <li><a class="nav-link  text-light" aria-current="page" href="{% url 'app_inventario:prestamos-vencidos' %}">Prestamos Vencidos</a></li>
             <li><hr class="dropdown-divider"></li>            
           </ul>
         </li>
-
-
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Registrar Nuevo
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Libro</a></li>
-            <li><a class="dropdown-item" href="#">Usuario</a></li>
+          <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item text-light" href="{% url 'app_inventario:registrar_libro' %}">Nuevo Libro</a></li>
+            <li><a class="dropdown-item text-light" href="{% url 'app_inventario:registrar_ejemplar' %}">Nuevo Ejemplar</a></li>
+            <li><a class="dropdown-item text-light" href="{% url 'app_inventario:registrar_usuario' %}">Nuevo Usuario</a></li>
+            <li><a class="dropdown-item text-light" href="{% url 'app_inventario:registrar_prestamo' %}">Nuevo Prestamo</a></li>
+            <li><a class="dropdown-item text-light" href="{% url 'app_inventario:registrar_multa' %}">Nuevo Multa</a></li>
             <li><hr class="dropdown-divider"></li>
-            {% comment %} <li><a class="dropdown-item" href="#">Something else here</a></li> {% endcomment %}
           </ul>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/admin">Admin</a>
+          <a class="nav-link text-light" href="/admin">Admin</a>
         </li>
 
 
-        {% comment %} <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li> {% endcomment %}
-
 
       </ul>
-        {% comment %} <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
-        </li> {% endcomment %}
       </ul>
-      {% comment %} <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> {% endcomment %}
     </div>
   </div>
 </nav>

@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+
+{% block content %}     
+<div class="card text-center mx-auto">                                 
+<div class="card-body mx-auto">
+
+<form method="post" enctype="multipart/form-data" >    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
+    <button type="submit" class="btn btn-success">Actualizar</button>
+</form>
+{% endblock  %}  

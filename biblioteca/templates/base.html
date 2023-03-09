@@ -1,14 +1,13 @@
 {% load static %}
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -17,29 +16,30 @@
 
     <title>{% block title %}{% endblock title %}</title>
 
-
-
-
-
 </head>
 
 <body>
 
     {% block nav %}
-
+    {% include 'includes/header.html' %}
     {% endblock nav %}
 
-    {% block content %}
+    <div class="container">
 
-    {% endblock content %}
+        <div class="card text-center mx-auto shadow p-3 mb-5 bg-body rounded" ">
+            {% block content %}
+            {% endblock content %}
+            <div class="card-footer text-muted">
+                {% block footer_card %}
 
-
-
-
+                {% endblock footer_card %}
+            </div> 
+        </div>
+    </div>
+    
 </body>
 
 {% comment %} <script src="{% static 'js/bootstrap.min.js' %}"></script> {% endcomment %}
-
 
 
 </html>

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+
+{% block title %}
+Crear Libro
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+
+<h1>Registrar nuevo Libro</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+
+  </form>
+
+
+{% endblock content %}

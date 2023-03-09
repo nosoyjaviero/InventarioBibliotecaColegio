@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+
+{% block content %}
+<!--<div class="card text-center mx-auto">
+    <div class="card-body mx-auto">
+
+        <form method="post"  enctype="multipart/form-data" >{% csrf_token %}
+            <h3>¿Desea actualizar la fecha de devolución ?</h3>
+            <div class="form-group">
+                <label for="">Fecha del prestamo
+                    (Dia,Mes,Año) 
+                     {{ form.fecha_prestamo|add_class:"form-control"}}</label>
+               
+                {% comment %} {{ form.fecha_prestamo }} {% endcomment %}
+            </div>
+            <div class="form-group">
+                <label for="">Fecha a Devolver (Año,Mes, Dia)
+                    {{ form.fecha_devolucion |add_class:"form-control" }}
+                </label>
+               
+            </div>
+            <button type="submit" class="btn btn-success">Actualizar fecha de prestamos</button>
+        </form>       
+    </div>
+</div> 
+-->
+
+<div class="card text-center mx-auto">                                 
+    <div class="card-body mx-auto">
+    
+    <form method="post" enctype="multipart/form-data" >    {% csrf_token %}
+        {% bootstrap_form form button_type='submit' button_css_classes='btn btn-success' %}
+        <button type="submit" class="btn btn-success">Actualizar</button>
+    </form>
+    </div>
+    </div>
+
+{% endblock content %}
+    
+

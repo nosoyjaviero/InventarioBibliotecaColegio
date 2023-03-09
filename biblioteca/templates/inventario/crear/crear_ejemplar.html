@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+
+
+{% block title %}
+Crear Nuevo Ejemplar
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+
+<h1>Registrar Nuevo Ejemplar</h1>
+
+{% comment %} <form action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
+    {{form}}
+<button type="submit" class="button success">Guardar</button>
+</form> {% endcomment %}
+
+<div class="container">
+
+ 
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+
+      </form>
+</div>
+
+   
+{% endblock content %}
+
+ {% comment %} <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form> {% endcomment %}

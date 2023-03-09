@@ -23,34 +23,41 @@
 
   <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
 
-    {% if libro.avatar %}
+    {% if ejemplar.libro.avatar %}
     <img src="{{ libro.avatar.url }}" class="img-fluid">
     {% else %}
     <img src="{% static 'img/logo.png' %}" alt="" class="img-fluid">
     {% endif %}
 
     <div class="card-body">
-      <h5 class="card-title">{{libro.titulo}}</h5>
+      <h5 class="card-title">{{ejemplar.libro.titulo}}</h5>
       {% comment %} <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
         card's content.</p> {% endcomment %}
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">{{libro.autor}}</li>
+      <li class="list-group-item">{{ejemplar.libro.autor}}</li>
+
       <li class="list-group-item">
-        <p>ISBN: {{libro.isbn}}</p>
+        <p>Estado:: {{ejemplar.estado}}</p>
+      </li>
+
+      <li class="list-group-item">
+        <p>Ubicacion: {{ejemplarubicacion }} </p>
+      </li>
+
+      <li class="list-group-item">
+        <p>Fecha Adquisicion: {{ejemplar.fecha_adquisicion}}</p>
+      </li>
+
+      <li class="list-group-item">
+        <p>Ultima revision: {{ejemplar.ultima_revision}}</p>
       </li>
       <li class="list-group-item">
-        <p>Editorial: {{libro.editorial}} </p>
-      </li>
-      <li class="list-group-item">
-        <p>Fecha Publicacion: {{libro.fecha_publicacion}}</p>
-      </li>
-      <li class="list-group-item">
-        <p>Numero de Paginas: {{libro.num_paginas}}</p>
+        <p>Cantidad:: {{ejemplar.cantidad}}</p>
       </li>
     </ul>
     <li class="list-group-item">
-      <a type="button" class="btn btn-info justify-content-center" href="{% url 'app_inventario:editar_libro' libro.id  %}">Editar</a>
+      <a type="button" class="btn btn-info justify-content-center" href="{% url 'app_inventario:editar_libro' libro.id  %}"">Actualizar</a>
     </li>
   </div>
 

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}
+Ejemplares
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+
+
+          {% comment %} <div class="card-header"> </div> {% endcomment %}
+
+          
+         
+          
+          <div class="card-body mx-auto">
+            <h3>Ejemplares</h3>
+            <div class="row">
+                  {% for ejemplar in ejemplares %}
+                  <div class="col-md-4">
+                      <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+
+                        {% if ejemplar.libro.avatar %}
+
+                        <a href="{% url 'app_inventario:editar_ejemplar' ejemplar.id %}"><img src="{{ ejemplar.libro.avatar.url }}" class="img-fluid"></a>
+                        {% else %}
+                        <a href="{% url 'app_inventario:editar_ejemplar' ejemplar.id %}"><img src="{% static 'img/logo.png' %}" alt=""
+                            class="img-fluid"></a>
+                        {% endif %}
+
+                        <div class="card-body">
+                          <h5 class="card-title">{{ejemplar.libro.titulo}}</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">{{ejemplar.libro.autor}}</li>
+                        </ul>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">{{ejemplar.estado}}</li>
+                        </ul>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Cantidad disponible: {{ejemplar.cantidad}}</li>
+                        </ul>
+                        <ul class="list-group list-group-flush">
+                          
+                          {% if ejemplar.ubicacion %}
+                          <li class="list-group-item">Ubicacion: {{ejemplar.ubicacion}}</li>
+                          {% endif %}
+                            
+                          
+                        </ul>
+
+                      </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 %}
+                  </div>
+                  <div class="row">
+                  
+                    {% endif %}
+                  {% endfor %}
+          </div>
+
+
+
+ 
+
+{% endblock content %}
+
+{% block footer_card %}
+  {% include 'includes/paginacion.html' %}
+{% endblock footer_card %}

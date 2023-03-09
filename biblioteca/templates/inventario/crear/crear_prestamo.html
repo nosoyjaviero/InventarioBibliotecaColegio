@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+
+{% block title %}
+Crear Prestamo
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="container">
+    <h1>Registrar Nuevo Prestamo</h1>
+ 
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form exclude="comentarios, devuelto" layout='horizontal' button_type='submit' button_css_classes='button success' %}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+
+      </form>
+</div>
+
+
+{% endblock content %}

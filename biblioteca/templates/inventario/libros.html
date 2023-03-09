@@ -4,7 +4,7 @@
 
 
 {% block title %}
-Inicio
+Libros
 {% endblock title %}
 
 
@@ -12,45 +12,50 @@ Inicio
 
 
 {% block content %}
-{% include 'includes/header.html' %}
 
 
-<div class="container">
+{% comment %} <div class="card-header"> </div> {% endcomment %}
 
-  <div class="card text-center mx-auto">
-          <div class="card-header">
-            {% comment %} {{libro.titulo}} {% endcomment %}
-          </div>
-          <div class="card-body mx-auto">
-                  {% for libro in libros %}
-                      <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
 
-                        {% if libro.avatar %}
 
-                        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{{ libro.avatar.url }}" class="img-fluid"></a>
-                        {% else %}
-                        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{% static 'img/logo.png' %}" alt=""
-                            class="img-fluid"></a>
-                        {% endif %}
 
-                        <div class="card-body">
-                          <h5 class="card-title">{{libro.titulo}}</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">{{libro.autor}}</li>
-                        </ul>
+<div class="card-body mx-auto">
+  <h3>Libros</h3>
+  <div class="row">
+    {% for libro in libros %}
+    <div class="col-md-4">
+      <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
 
-                      </div>
-                  {% endfor %}
-          </div>
+        {% if libro.avatar %}
 
-          <div class="card-footer text-muted">
-            {% comment %} 2 days ago {% endcomment %}
-          </div>
-    
+        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{{ libro.avatar.url }}" class="img-fluid"></a>
+        {% else %}
+        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{% static 'img/logo.png' %}" alt=""
+            class="img-fluid"></a>
+        {% endif %}
+
+        <div class="card-body">
+          <h5 class="card-title">{{libro.titulo}}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{libro.autor}}</li>
+        </ul>
+
+      </div>
+    </div>
+    {% if forloop.counter|divisibleby:3 %}
+  </div>
+  <div class="row">
+  
+    {% endif %}
+    {% endfor %}
   </div>
 
-</div>
 
 
-{% endblock content %}
+
+  {% endblock content %}
+
+  {% block footer_card %}
+  {% include 'includes/paginacion.html' %}
+  {% endblock footer_card %}

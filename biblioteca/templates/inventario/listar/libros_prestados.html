@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}
+Libros Prestados
+{% endblock title %}
+
+
+
+
+
+{% block content %}
+    
+<h1>Todos los libros prestados</h1>
+
+<form method='GET' class="cell grid-x grid-margin-x"> {% csrf_token %}
+  <div class="cell large-7">
+      <!--colocamos kword aqui en id y name -->
+      <input type="text" id="kword" name="kword" placeholder="Buscar empleado"> 
+  </div>
+      <!--button de foundation -->
+  <div class="cell large-2">
+          <button type="submit" class="success button">Buscar</button>
+  </div>            
+</form> 
+
+
+<div class="row">
+  {% for prestamo in object_list %}
+    <div class="col-md-4">
+      <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+        {% if prestamo.ejemplar.libro.avatar %}       
+          <img src="{{ prestamo.ejemplar.libro.avatar.url }}" class="img-fluid">       
+        {% else %}
+        <img src="{% static 'img/logo.png' %}" alt="" class="img-fluid">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{prestamo.ejemplar.libro.titulo}}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+          
+          {% block informacion %}
+            
+          {% endblock informacion %}
+            
+          <li class="list-group-item">{{prestamo.usuario.nombre}} {{prestamo.usuario.apellido}}</li>
+          <li class="list-group-item">{{prestamo.usuario.cedula}}</li>
+          <li class="list-group-item">{{prestamo.usuario.seccion}}</li>
+          <li class="list-group-item">{{prestamo.usuario.telefono}}</li>
+          <li class="list-group-item">{{prestamo.fecha_devolucion}}</li>
+          <li class="list-group-item grid-margin-x">
+            <a href="{% url 'app_inventario:actualizar_fecha' prestamo.id %}" class="btn btn-warning">Atualizar fecha</a>
+            <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}"  class="btn btn-danger">Devolver</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% comment %} La línea de código {% if forloop.counter|divisibleby:3 %} se utiliza en un bucle for para verificar si el índice actual del bucle es divisible por 3.
+
+forloop.counter es una variable de contexto que se utiliza para contar el número de veces que se ha iterado en un bucle for. Por lo tanto, forloop.counter|divisibleby:3 significa que estamos dividiendo el valor de forloop.counter por 3 y verificando si el resultado es un número entero o no.
+
+El operador | se utiliza para aplicar un filtro a la variable, que en este caso es el filtro divisibleby, que verifica si el valor de la variable se puede dividir de manera exacta por el número especificado (en este caso, 3).
+
+En resumen, la línea de código {% if forloop.counter|divisibleby:3 %} se utiliza para crear una nueva fila en una grilla de elementos cada vez que se hayan mostrado tres elementos en la fila actual. {% endcomment %}
+    {% if forloop.counter|divisibleby:3 %}
+      </div><div class="row">
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block footer_card %}
+  {% include 'includes/paginacion.html' %}
+{% endblock footer_card %}

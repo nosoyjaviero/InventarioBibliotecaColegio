@@ -1,20 +1,110 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
 
-
 {% block title %}
-Inicio
+  Inicio
 {% endblock title %}
-
-
-
-
+  
 
 {% block content %}
-{% include 'includes/header.html' %}
+    
+<h1>Prestamos para el dia hoy</h1>
+<div class="row">
+  {% for prestamo in object_list %}
+  <div class="col-md-4 col-sm-6 col-xs-12">
+    <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
+      {% if prestamo.ejemplar.libro.avatar %}
+      <!-- <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}">  </a> -->
+     
+    <img src="{{ prestamo.ejemplar.libro.avatar.url }}" class="img-fluid .hover-image">
+     
+      {% else %}
+    <!--   <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}">   </a> -->
+      <img src="{% static 'img/logo.png' %}" alt="" class="img-fluid">
+   
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{prestamo.ejemplar.libro.titulo}}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        
+        
+          
+        <li class="list-group-item">{{prestamo.usuario.nombre}} {{prestamo.usuario.apellido}}</li>
+        <li class="list-group-item">{{prestamo.usuario.cedula}}</li>
+        <li class="list-group-item">{{prestamo.usuario.seccion}}</li>
+        <li class="list-group-item">{{prestamo.usuario.telefono}}</li>
+        <li class="list-group-item grid-margin-x">
+          <a href="{% url 'app_inventario:actualizar_fecha' prestamo.id %}" class="btn btn-warning">Atualizar fecha</a>
+          <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}"  class="btn btn-danger">Devolver</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+    {% if forloop.counter|divisibleby:3 %}
+      </div><div class="row">
+    {% endif %}
+  {% endfor %}
+</div>
 
-<h1>Pagina Principal</h1>
+{% endblock %}
+
+{% block footer_card %}
+  {% include 'includes/paginacion.html' %}
+{% endblock footer_card %}
 
 
-{% endblock content %}
+
+
+{% comment %} 
+{% block footer_card %}
+sadaasdas
+<div class="paginacion"> <!--Pagination-->
+        {% if is_paginated %}
+                <nav aria-label="Pagination">
+                        <ul class="pagination">
+                                  {% if page_obj.has_previous %}
+                                        <li class="pagination-previous disabled">
+                                          <a href="?page={{page_obj.previous_page_number}}" aria-label="Page 2">Atras</a>
+                                        </li>
+                                  {% endif %}
+                                  {% for pagina in paginator.page_range %}
+                                        
+                                        {% if pagina %}
+                                                {% if  pagina == page_obj.number %}
+                                                    <li class="current"><span class="show-for-sr">You're on page</span>{{pagina}}</li>                 
+                                                {% else %}
+                                                    <li><a href="?page={{pagina}}" aria-label="Page 2">{{pagina}}</a></li>
+                                                {% endif %}
+                                        {% else %}
+                                          
+                                        {% endif %}                       
+                               
+
+                                  {% endfor %}
+                                  {% if page_obj.has_next %}
+                                        <li class="pagination-next">
+                                          <a href="?page={{page_obj.next_page_number}}">Siguiente</a>
+                                        </li>
+                                  {% endif %}
+                        </ul>
+                </nav>
+        {% endif %}
+
+</div> <!--End Pagination-->
+
+{% endblock footer_card %} {% endcomment %}
+
+
+
+    
+
+
+ 
+
+
+
+
+    
