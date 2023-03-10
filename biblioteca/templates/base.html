@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'jquery/jquery-ui.min.css' %}"> 
+
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -18,7 +20,7 @@
 
 </head>
 
-<body>
+<body style="background-image: url('{% static 'img/fondo.jpg' %}');">
 
     {% block nav %}
     {% include 'includes/header.html' %}
@@ -29,6 +31,15 @@
         <div class="card text-center mx-auto shadow p-3 mb-5 bg-body rounded" ">
             {% block content %}
             {% endblock content %}
+
+
+            <button id="about-btn"> Click Me - I'm Javascript on Speed</button>
+
+<p>This is a example</p>
+
+<p>This is another example</p>
+
+
             <div class="card-footer text-muted">
                 {% block footer_card %}
 
@@ -36,10 +47,15 @@
             </div> 
         </div>
     </div>
+    {% block javascript %}
     
+
+    {% endblock %}
+
+    <script src="{% static "js/rango-jquery.js" %}"></script>
 </body>
 
-{% comment %} <script src="{% static 'js/bootstrap.min.js' %}"></script> {% endcomment %}
+
 
 
 </html>

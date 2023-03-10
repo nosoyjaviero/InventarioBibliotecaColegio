@@ -28,6 +28,8 @@ class Libro(models.Model):
     fecha_publicacion = models.DateField( blank=True ,null=True )
     num_paginas = models.IntegerField( blank=True ,null=True )
     avatar= models.ImageField('Imagen de Portada',upload_to='libros',null=True, blank=True )
+    
+    
     def __str__(self):
         return self.titulo    
 

@@ -1,0 +1,23 @@
+.dropdown-menu a:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  img {
+    transition: opacity 0.3s ease-in-out; /* Establece la duración y el tipo de transición */
+  }
+  
+  /* Aplica el efecto cuando el cursor del mouse pasa por encima de la imagen */
+  .hover-image {
+    opacity: 0.7; /* Establece la opacidad a un valor menor */
+  }
+
+  .hover-image:hover  {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  body {
+    background-image: url('{% static "img/wallpaper.avif" %}');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }

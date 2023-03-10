@@ -8,7 +8,7 @@ from django.utils import timezone
 from datetime import date
 from datetime import timedelta
 
-
+from .forms import Prueba
 
 from .models import Libro, Prestamo, Usuario, Ejemplar,Multa
 
@@ -25,6 +25,36 @@ from django.views.generic import (
 # Create your views here.
 
 
+class Prueba(CreateView):
+     template_name = "inventario/crear/crear_prestamo.html"
+     model = Prestamo
+     fields=('__all__')
+
+     success_url= reverse_lazy('app_inventario:inicio')    
+     
+     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['secciones'] = Usuario.objects.values_list('seccion', flat=True).distinct()
+        return context 
+     
+     def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
+        return form
+    
+     def form_valid(self, form):
+        # Restar un ejemplar de la cantidad
+        ejemplar = form.instance.ejemplar
+        ejemplar.cantidad -= 1
+        ejemplar.save()
+        if (ejemplar.cantidad==0):
+            ejemplar.estado='prestado'
+            ejemplar.save()
+
+        # Continuar con el procesamiento del formulario
+        return super().form_valid(form) 
+    
+
 class libros_prestados(ListView):
     template_name= 'inventario/listar/libros_prestados.html'
     # prestamos = Prestamo.objects.filter(devuelto=False)
@@ -32,16 +62,16 @@ class libros_prestados(ListView):
     paginate_by=6    
     ordering='fecha_devolucion'
     
-    # def get_queryset(self):        
-    #     palabra_clave= self.request.GET.get("kword", '') 
-    #     lista= Prestamo.objects.filter(           
-    #         firts_name__icontains=palabra_clave
-    #     )       
-        #   return lista
-
     
     def get_queryset(self):
-        return Prestamo.objects.filter(devuelto=False)               
+        palabra_clave = self.request.GET.get("kword", '') 
+        lista =Prestamo.objects.filter(
+            devuelto=False,
+            ejemplar__libro__titulo__icontains=palabra_clave)       
+        return lista
+    
+    # def get_queryset(self):
+    #     return Prestamo.objects.filter(devuelto=False)               
 
 class Inicio(ListView):
     template_name= 'inicio.html'
@@ -50,22 +80,38 @@ class Inicio(ListView):
     paginate_by=6
     def get_queryset(self):
         hoy = date.today()
-        prestamos_hoy = Prestamo.objects.filter(fecha_devolucion=hoy, devuelto=False)
-        return prestamos_hoy
+        # prestamos_hoy = Prestamo.objects.filter( devuelto=False)
+        # return prestamos_hoy
+        palabra_clave = self.request.GET.get("kword", '') 
+        lista =Prestamo.objects.filter(
+            fecha_devolucion=hoy,
+            devuelto=False,
+            ejemplar__libro__titulo__icontains=palabra_clave)       
+        return lista
    
 class ListaDeLibros(ListView):
     template_name= 'inventario/libros.html'
-    model=Libro
+    # model=Libro
     context_object_name= 'libros'
     paginate_by=6
     ordering='titulo'
+    def get_queryset(self):
+        palabra_clave = self.request.GET.get("kword", '') 
+        lista =Libro.objects.filter(
+            titulo__icontains=palabra_clave)       
+        return lista
     
 class ListaDeEjemplares(ListView):
     template_name= 'inventario/listar/ejemplares.html'
-    model=Ejemplar
+    # model=Ejemplar
     context_object_name= 'ejemplares'
     paginate_by=6
     ordering='libro__titulo'
+    def get_queryset(self):
+        palabra_clave = self.request.GET.get("kword", '') 
+        lista =Ejemplar.objects.filter(
+            libro__titulo__icontains=palabra_clave)       
+        return lista
     
 class DetalleLibro(DetailView):
     template_name= 'inventario/libro.html'
@@ -79,9 +125,12 @@ class PrestamosVencidos(ListView):
     def get_queryset(self):
         hoy = timezone.now().date()
         dias_atras = hoy - timedelta(days=15)
-        queryset = Prestamo.objects.filter(fecha_prestamo__lte=dias_atras, devuelto=False)
-        return queryset
-    
+        palabra_clave = self.request.GET.get("kword", '') 
+        lista =Prestamo.objects.filter(
+            fecha_prestamo__lte=dias_atras,
+            devuelto=False,
+            ejemplar__libro__titulo__icontains=palabra_clave)       
+        return lista
 class DevolverPrestamo(UpdateView):
     template_name = 'inventario/devolucion.html'
     model = Prestamo
@@ -95,11 +144,11 @@ class DevolverPrestamo(UpdateView):
             
             ejemplar = prestamo.ejemplar
             if (ejemplar.cantidad == 0 and ejemplar.estado=='prestado'):
-                print('ejemplar.estado'+ejemplar.estado)
+                
                 ejemplar.cantidad +=1
                 ejemplar.estado='disponible'
                 ejemplar.save()
-                print('ejemplar.estado 2'+ejemplar.estado)
+                
             if (ejemplar.cantidad >0 and ejemplar.estado=='disponible'):                
                 ejemplar.cantidad +=1
                 ejemplar.save()
@@ -109,40 +158,6 @@ class DevolverPrestamo(UpdateView):
         
         return super().form_valid(form)
       
-    # def form_valid(self, form):
-    #     prestamo = form.save(commit=False)        
-    #     if prestamo.devuelto:
-    #         # restar 1 a la cantidad de Ejemplar
-    #         # ejemplar = prestamo.ejemplar
-    #         # ejemplar.cantidad += 1
-    #         # ejemplar.save()
-
-    #         # borrar registro de Prestamo
-    #         prestamo.ejemplar.cantidad += 1
-    #         prestamo.delete()
-    #         prestamo.save()
-            
-    #     else:
-    #         # si no se confirma la devolución, solo guardar el registro de Prestamo
-    #         return super().form_valid(form)
-    #     return super().form_valid(form)
-    
- # def post(self, request, *args, **kwargs):
-        
-    #     self.object= self.get_object()
-        
-    #     form = self.get_form()
-    #     prestamo = form.save(commit=False)
-    #     if prestamo.devuelto:
-    #             # restar uno a la cantidad de Ejemplar
-    #             ejemplar = prestamo.ejemplar
-    #             ejemplar.cantidad += 1
-    #             ejemplar.save()
-
-    #             # eliminar el registro de Prestamo
-    #             prestamo.delete()
-    #     return super().post(request, *args, **kwargs)
-    
     
 class ActualizarFechaPrestamo(UpdateView):
     template_name = 'inventario/editar/actualizar_fecha.html'

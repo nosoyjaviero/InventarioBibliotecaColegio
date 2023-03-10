@@ -27,3 +27,8 @@ class PrestamoForm(forms.ModelForm):
     class Meta:
         model = Prestamo
         fields = ['fecha_prestamo', 'fecha_devolucion', 'devuelto']
+        
+class Prueba(forms.ModelForm):
+    class Meta:
+        model = Prestamo
+        fields = ['fecha_prestamo', 'fecha_devolucion', 'devuelto']

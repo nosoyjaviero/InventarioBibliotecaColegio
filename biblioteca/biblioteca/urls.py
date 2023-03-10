@@ -27,7 +27,7 @@ urlpatterns = [
     re_path('', include("apps.inventario.urls")),
     # re_path('', include("applications.personas.urls")),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # OPEN ia NOS SUGIERE QUE REMPLACEMOS ESTO QUE CONCATENAMOS A urlpatterns  por esto 
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -15,17 +15,7 @@ Libros Prestados
     
 <h1>Todos los libros prestados</h1>
 
-<form method='GET' class="cell grid-x grid-margin-x"> {% csrf_token %}
-  <div class="cell large-7">
-      <!--colocamos kword aqui en id y name -->
-      <input type="text" id="kword" name="kword" placeholder="Buscar empleado"> 
-  </div>
-      <!--button de foundation -->
-  <div class="cell large-2">
-          <button type="submit" class="success button">Buscar</button>
-  </div>            
-</form> 
-
+{% include 'includes/busqueda.html' %}
 
 <div class="row">
   {% for prestamo in object_list %}
