@@ -25,63 +25,6 @@ from django.views.generic import (
     )
 # Create your views here.
 
-def cargar_libros(request):
-    if request.method == 'POST':
-        archivo = request.FILES['csv_file']
-        datos_csv = archivo.read().decode('utf-8').splitlines()
-        lector_csv = csv.DictReader(datos_csv)
-        libros_no_importados = []
-
-        for linea in lector_csv:
-            titulo = linea["titulo"]
-            libro, creado = Libro.objects.get_or_create(
-                    titulo=titulo,
-                    autor=linea["autor"],
-                    isbn=linea["isbn"],
-                    editorial=linea["editorial"],
-                    fecha_publicacion=linea["fecha_publicacion"],
-                    num_paginas=linea["num_paginas"],
-                    avatar=linea["avatar"],
-                )
-            if not creado:
-                libros_no_importados.append(titulo)
-
-        if libros_no_importados:
-            mensaje = f"Los siguientes libros no se importaron porque ya existen en la base de datos: {', '.join(libros_no_importados)}"
-        else:
-            mensaje = "Todos los libros se importaron correctamente."
-        return render(request, 'inventario/crear/rellenar_libros.html', {'mensaje': mensaje})
-
-    return render(request, 'inventario/crear/rellenar_libros.html')
-
-def cargar_usuarios(request):
-    if request.method == 'POST':
-        archivo = request.FILES['csv_file']
-        datos_csv = archivo.read().decode('utf-8').splitlines()
-        lector_csv = csv.DictReader(datos_csv)
-        usuarios_no_importados = []
-
-        for linea in lector_csv:
-            cedula = linea["cedula"]
-            usuario, creado = Usuario.objects.get_or_create(
-                    nombre=linea["nombre"],
-                    apellido=linea["apellido"],
-                    cedula=cedula,
-                    direccion=linea["direccion"],
-                    telefono=linea["telefono"],
-                    correo_electronico=linea["correo_electronico"],
-                    seccion=linea["seccion"],
-                )
-            if not creado:
-                usuarios_no_importados.append(cedula)
-
-        if usuarios_no_importados:
-            mensaje = f"Los siguientes usuarios no se importaron porque ya existen en la base de datos: {', '.join(usuarios_no_importados)}"
-        else:
-            mensaje = "Todos los usuarios se importaron correctamente."
-        return render(request, 'inventario/crear/rellenar_usuarios.html', {'mensaje': mensaje})
-
-    return render(request, 'inventario/crear/rellenar_usuarios.html')
 
 # class Prueba(CreateView):
 
@@ -92,14 +35,23 @@ def cargar_usuarios(request):
 
 def Prueba(request):
     if request.method == 'POST':
-        seccion_id = request.POST.get('seccion')
-        if seccion_id is not None and seccion_id != '':
-            return redirect('app_inventario:otra_vista', seccion_id=seccion_id)
+        seccion = request.POST.get('seccion')
+        
+        assert(seccion, "")
+        if seccion is not None and seccion != '':
+            print('Entre'+seccion)
+            return redirect('app_inventario:otra_vista', seccion_id=seccion)
         else:
-            return redirect('app_inventario:otra_vista') # redirigir sin seccion_id si seccion_id es None o una cadena vacía
+            return redirect('app_inventario:otra_vista')
     else:
-        usuarios = Usuario.objects.all()
-        return render(request, 'inventario/crear/crear_ejemplar1.html', {'usuarios': usuarios})
+        secciones = Usuario.objects.values_list('seccion', flat=True).distinct()
+        return render(request, 'inventario/crear/crear_ejemplar1.html', {'secciones': secciones})
+
+
+def otra_vista(request, seccion):
+    print(seccion)
+    usuarios = Usuario.objects.filter(seccion=seccion)
+    return render(request, 'ruta/a/template.html', {'usuarios': usuarios})
 
 
 
@@ -337,7 +289,64 @@ class PrestamoCreateView(CreateView):
     #         # Si el estado es diferente a 'prestado', realiza el préstamo normalmente
     #         return super().form_valid(form)
     
-    
+def cargar_libros(request):
+    if request.method == 'POST':
+        archivo = request.FILES['csv_file']
+        datos_csv = archivo.read().decode('utf-8').splitlines()
+        lector_csv = csv.DictReader(datos_csv)
+        libros_no_importados = []
+
+        for linea in lector_csv:
+            titulo = linea["titulo"]
+            libro, creado = Libro.objects.get_or_create(
+                    titulo=titulo,
+                    autor=linea["autor"],
+                    isbn=linea["isbn"],
+                    editorial=linea["editorial"],
+                    fecha_publicacion=linea["fecha_publicacion"],
+                    num_paginas=linea["num_paginas"],
+                    avatar=linea["avatar"],
+                )
+            if not creado:
+                libros_no_importados.append(titulo)
+
+        if libros_no_importados:
+            mensaje = f"Los siguientes libros no se importaron porque ya existen en la base de datos: {', '.join(libros_no_importados)}"
+        else:
+            mensaje = "Todos los libros se importaron correctamente."
+        return render(request, 'inventario/crear/rellenar_libros.html', {'mensaje': mensaje})
+
+    return render(request, 'inventario/crear/rellenar_libros.html')
+
+def cargar_usuarios(request):
+    if request.method == 'POST':
+        archivo = request.FILES['csv_file']
+        datos_csv = archivo.read().decode('utf-8').splitlines()
+        lector_csv = csv.DictReader(datos_csv)
+        usuarios_no_importados = []
+
+        for linea in lector_csv:
+            cedula = linea["cedula"]
+            usuario, creado = Usuario.objects.get_or_create(
+                    nombre=linea["nombre"],
+                    apellido=linea["apellido"],
+                    cedula=cedula,
+                    direccion=linea["direccion"],
+                    telefono=linea["telefono"],
+                    correo_electronico=linea["correo_electronico"],
+                    seccion=linea["seccion"],
+                )
+            if not creado:
+                usuarios_no_importados.append(cedula)
+
+        if usuarios_no_importados:
+            mensaje = f"Los siguientes usuarios no se importaron porque ya existen en la base de datos: {', '.join(usuarios_no_importados)}"
+        else:
+            mensaje = "Todos los usuarios se importaron correctamente."
+        return render(request, 'inventario/crear/rellenar_usuarios.html', {'mensaje': mensaje})
+
+    return render(request, 'inventario/crear/rellenar_usuarios.html')
+   
 #     model = Prestamo
 #     template_name = 'inventario/prestamos_vencidos.html'
 
