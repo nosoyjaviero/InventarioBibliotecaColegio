@@ -24,3 +24,12 @@ Crear Usuario
 
 
 {% endblock content %}
+
+{% block footer_card %}
+<div class="container">  
+  <div class="text-right">
+    <a class="btn btn-info" href="{% url 'app_inventario:cargar_usuarios' %}">Archivo CSV</a>
+  </div>
+</div>
+{% endblock footer_card %}
+  

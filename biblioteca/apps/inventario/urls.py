@@ -18,7 +18,9 @@ urlpatterns = [
     
     #  path('libro-devuelto/<pk>', views.ActualizarPrestamo.as_view(), name= 'devolucion'),
      
-   path('prueba', views.Prueba.as_view(), name="prueba"),
+   path('cargar_usuario', views.cargar_usuarios, name="cargar_usuarios"),
+   path('cargar_libro', views.cargar_libros, name="cargar_libros"),
+#   path('otra_vista/<int:seccion_id>/', views.otra_vista, name='otra_vista'),
        
        
    path('prestamo/<pk>/', views.DevolverPrestamo.as_view(), name='devolver_ejemplar'),

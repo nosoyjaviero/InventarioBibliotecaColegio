@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+
+<h1>Cargar Usuarios</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="csv_file">Cargar archivo CSV:</label>
+        <input type="file" name="csv_file" id="csv_file" class="form-control"><br><br>
+        <input type="submit" value="Cargar" class="btn btn-success">
+    </form>
+    
+{% endblock content %}
+    

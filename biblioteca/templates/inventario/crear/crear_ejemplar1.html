@@ -1,0 +1,26 @@
+{% comment %} <form>
+    <label for="mi_campo">Selecciona una opción:</label>
+    <select id="mi_campo" name="mi_campo">
+        {% for opcion in opciones %}
+            <option value="{{ opcion }}">{{ opcion }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Enviar</button>
+</form> {% endcomment %}
+
+<form method="POST" >
+    {% csrf_token %}
+    <label for="seccion">Sección:</label>
+    <select name="seccion" id="seccion">
+        {% for usuario in usuarios %}
+            <option value="{{ usuario.id }}">{{ usuario.seccion }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Enviar</button>
+</form>
+
+{% comment %} <select>
+    {% for d in ids %}
+        <option value="{{ d.id }}">{{ d}}</option>
+    {% endfor %}
+</select> {% endcomment %}

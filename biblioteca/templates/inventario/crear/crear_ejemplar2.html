@@ -1,0 +1,10 @@
+<form method="POST" action="{% url 'app_inventario:otra_vista' seccion_id=seccion_id %}">
+    {% csrf_token %}
+    <label for="usuario">Usuario:</label>
+    <select name="usuario" id="usuario">
+        {% for usuario in usuarios %}
+            <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Enviar</button>
+</form>

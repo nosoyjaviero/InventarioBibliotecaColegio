@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import date
 from datetime import timedelta
+import csv
 
 from .forms import Prueba
 
@@ -24,35 +25,102 @@ from django.views.generic import (
     )
 # Create your views here.
 
+def cargar_libros(request):
+    if request.method == 'POST':
+        archivo = request.FILES['csv_file']
+        datos_csv = archivo.read().decode('utf-8').splitlines()
+        lector_csv = csv.DictReader(datos_csv)
+        libros_no_importados = []
 
-class Prueba(CreateView):
-     template_name = "inventario/crear/crear_prestamo.html"
-     model = Prestamo
-     fields=('__all__')
+        for linea in lector_csv:
+            titulo = linea["titulo"]
+            libro, creado = Libro.objects.get_or_create(
+                    titulo=titulo,
+                    autor=linea["autor"],
+                    isbn=linea["isbn"],
+                    editorial=linea["editorial"],
+                    fecha_publicacion=linea["fecha_publicacion"],
+                    num_paginas=linea["num_paginas"],
+                    avatar=linea["avatar"],
+                )
+            if not creado:
+                libros_no_importados.append(titulo)
 
-     success_url= reverse_lazy('app_inventario:inicio')    
-     
-     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['secciones'] = Usuario.objects.values_list('seccion', flat=True).distinct()
-        return context 
-     
-     def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
-        return form
+        if libros_no_importados:
+            mensaje = f"Los siguientes libros no se importaron porque ya existen en la base de datos: {', '.join(libros_no_importados)}"
+        else:
+            mensaje = "Todos los libros se importaron correctamente."
+        return render(request, 'inventario/crear/rellenar_libros.html', {'mensaje': mensaje})
+
+    return render(request, 'inventario/crear/rellenar_libros.html')
+
+def cargar_usuarios(request):
+    if request.method == 'POST':
+        archivo = request.FILES['csv_file']
+        datos_csv = archivo.read().decode('utf-8').splitlines()
+        lector_csv = csv.DictReader(datos_csv)
+        usuarios_no_importados = []
+
+        for linea in lector_csv:
+            cedula = linea["cedula"]
+            usuario, creado = Usuario.objects.get_or_create(
+                    nombre=linea["nombre"],
+                    apellido=linea["apellido"],
+                    cedula=cedula,
+                    direccion=linea["direccion"],
+                    telefono=linea["telefono"],
+                    correo_electronico=linea["correo_electronico"],
+                    seccion=linea["seccion"],
+                )
+            if not creado:
+                usuarios_no_importados.append(cedula)
+
+        if usuarios_no_importados:
+            mensaje = f"Los siguientes usuarios no se importaron porque ya existen en la base de datos: {', '.join(usuarios_no_importados)}"
+        else:
+            mensaje = "Todos los usuarios se importaron correctamente."
+        return render(request, 'inventario/crear/rellenar_usuarios.html', {'mensaje': mensaje})
+
+    return render(request, 'inventario/crear/rellenar_usuarios.html')
+
+# class Prueba(CreateView):
+
+# En el ejemplo que has dado, ids = Prestamo.objects.values_list('id', flat=True), se está obteniendo una lista plana de los valores del campo id de todos los objetos en la tabla Prestamo. Es decir, se obtiene una lista de valores enteros en lugar de una lista de tuplas con un solo elemento que contiene un valor entero.
+
+# Usar flat=True puede ser útil cuando se necesita obtener una lista plana de valores para trabajar con ella más fácilmente, sin tener que procesar las tuplas. En este caso, como solo se necesita obtener los valores del campo id, usar flat=True hace que el código sea más eficiente y más fácil de trabajar con los datos obtenidos.
+
+
+def Prueba(request):
+    if request.method == 'POST':
+        seccion_id = request.POST.get('seccion')
+        if seccion_id is not None and seccion_id != '':
+            return redirect('app_inventario:otra_vista', seccion_id=seccion_id)
+        else:
+            return redirect('app_inventario:otra_vista') # redirigir sin seccion_id si seccion_id es None o una cadena vacía
+    else:
+        usuarios = Usuario.objects.all()
+        return render(request, 'inventario/crear/crear_ejemplar1.html', {'usuarios': usuarios})
+
+
+
+      
+#     if request.method == 'POST':
+#         seccion_id = request.POST['seccion']
+#         # Hacer algo con el valor de seccion_id (por ejemplo, guardarlo en la base de datos)
+#         # Redirigir a la vista que muestra el siguiente formulario
+#         url = reverse('app_inventario:otra_vista', kwargs={'seccion_id': seccion_id})
+#         return redirect(url)
+#     else:
+#         # Obtener todos los usuarios y pasarlos al formulario
+#         usuarios = Usuario.objects.all()
+#         return render(request, 'inventario/crear/crear_ejemplar1.html', {'usuarios': usuarios})
     
-     def form_valid(self, form):
-        # Restar un ejemplar de la cantidad
-        ejemplar = form.instance.ejemplar
-        ejemplar.cantidad -= 1
-        ejemplar.save()
-        if (ejemplar.cantidad==0):
-            ejemplar.estado='prestado'
-            ejemplar.save()
-
-        # Continuar con el procesamiento del formulario
-        return super().form_valid(form) 
+def otra_vista(request, seccion_id=None):
+    if seccion_id is not None:
+        usuarios = Usuario.objects.filter(seccion=seccion_id)
+    else:
+        usuarios = Usuario.objects.all()
+    return render(request, 'inventario/crear/crear_ejemplar2.html', {'usuarios': usuarios})
     
 
 class libros_prestados(ListView):
