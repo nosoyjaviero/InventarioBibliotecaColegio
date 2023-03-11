@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 
 
@@ -33,7 +33,7 @@ from django.views.generic import (
 # Usar flat=True puede ser útil cuando se necesita obtener una lista plana de valores para trabajar con ella más fácilmente, sin tener que procesar las tuplas. En este caso, como solo se necesita obtener los valores del campo id, usar flat=True hace que el código sea más eficiente y más fácil de trabajar con los datos obtenidos.
 
 
-def Prueba(request):
+def Secciones(request):
     if request.method == 'POST':
         seccion = request.POST.get('seccion')
         
@@ -48,13 +48,6 @@ def Prueba(request):
         return render(request, 'inventario/crear/crear_ejemplar1.html', {'secciones': secciones})
 
 
-def otra_vista(request, seccion):
-    print(seccion)
-    usuarios = Usuario.objects.filter(seccion=seccion)
-    return render(request, 'ruta/a/template.html', {'usuarios': usuarios})
-
-
-
       
 #     if request.method == 'POST':
 #         seccion_id = request.POST['seccion']
@@ -67,13 +60,17 @@ def otra_vista(request, seccion):
 #         usuarios = Usuario.objects.all()
 #         return render(request, 'inventario/crear/crear_ejemplar1.html', {'usuarios': usuarios})
     
-def otra_vista(request, seccion_id=None):
+def SeleccionarUsuario(request, seccion_id=None):
     if seccion_id is not None:
         usuarios = Usuario.objects.filter(seccion=seccion_id)
     else:
         usuarios = Usuario.objects.all()
-    return render(request, 'inventario/crear/crear_ejemplar2.html', {'usuarios': usuarios})
     
+    url_prestamo = reverse('app_inventario:registrar_prestamo')
+    url_prestamo += f"?seccion={seccion_id}" if seccion_id is not None else ""
+    
+    return render(request, 'inventario/crear/crear_ejemplar2.html', {'usuarios': usuarios, 'url_prestamo': url_prestamo})
+
 
 class libros_prestados(ListView):
     template_name= 'inventario/listar/libros_prestados.html'
@@ -182,7 +179,7 @@ class DevolverPrestamo(UpdateView):
 class ActualizarFechaPrestamo(UpdateView):
     template_name = 'inventario/editar/actualizar_fecha.html'
     model = Prestamo
-    fields=[ 'fecha_devolucion']
+    fields=['fecha_devolucion']
     # fields=('__all__')  
     success_url = reverse_lazy('app_inventario:inicio')
 
@@ -233,7 +230,7 @@ class PrestamoCreateView(CreateView):
     model = Prestamo
     fields=('__all__')
 
-    success_url= reverse_lazy('app_inventario:inicio')    
+    success_url= reverse_lazy('app_inventario:inicio')   
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -252,8 +249,15 @@ class PrestamoCreateView(CreateView):
         # Continuar con el procesamiento del formulario
         return super().form_valid(form)
     
+    def post(self, request, *args, **kwargs):
+        seccion_id = request.GET.get('seccion')
+        # Hacer algo con la sección seleccionada
+        print(seccion_id)
+
+        return super().post(request, *args, **kwargs)
     
     
+   
     # def form_valid(self, form):
     #     # Obtiene el objeto Ejemplar seleccionado en el formulario
     #     ejemplar = form.cleaned_data['ejemplar']

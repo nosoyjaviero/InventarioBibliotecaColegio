@@ -1,4 +1,6 @@
 {% load static %}
+{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,19 +10,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'jquery/jquery-ui.min.css' %}"> 
-
-    {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     {% bootstrap_messages %}
 
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <script src="{% static 'js/jquery-3.6.0.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery.ui.datepicker-es.js' %}"></script>
+    
+    
+    {% block jquerycode %}    
+    {% endblock jquerycode %}        
 
-    <title>{% block title %}{% endblock title %}</title>
+    {% comment %} <script>
+        $(document).ready(function(){
+            $(".dateinput").datepicker({changeYear:true, changeMonth:true});
+        });
+    </script>    {% endcomment %}
+
+    <title>{% block title %}{% endblock title %}</title>   
 
 </head>
 
-<body style="background-image: url('{% static 'img/fondo.jpg' %}');">
+<body >
+{% comment %} <body style="background-image: url('{% static 'img/fondo.jpg' %}');"> {% endcomment %}
 
     {% block nav %}
     {% include 'includes/header.html' %}
@@ -29,6 +43,7 @@
     <div class="container">
 
         <div class="card text-center mx-auto shadow p-3 mb-5 bg-body rounded" ">
+            {% comment %} <input type="text" class="dateinput" name="fecha"> {% endcomment %}
             {% block content %}
             {% endblock content %}
 
@@ -41,10 +56,8 @@
             </div> 
         </div>
     </div>
-    {% block javascript %}   
 
-    {% endblock %}
-
+    
 </body>
 
 

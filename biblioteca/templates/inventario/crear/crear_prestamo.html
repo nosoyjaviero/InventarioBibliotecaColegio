@@ -2,7 +2,6 @@
 {% load static %}
 {% load django_bootstrap5 %}
 
-
 {% block title %}
 Crear Prestamo
 {% endblock title %}
@@ -20,7 +19,9 @@ Crear Prestamo
  
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% bootstrap_form form exclude="comentarios, devuelto" layout='horizontal' button_type='submit' button_css_classes='button success' %}
+        <div class="text-center">
+          {% bootstrap_form form exclude="comentarios, devuelto" layout='horizontal' button_type='submit' button_css_classes='button success' %}
+      </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
 
       </form>

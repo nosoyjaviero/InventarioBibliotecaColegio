@@ -4,42 +4,38 @@
 {% load widget_tweaks %}
 
 
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
+    
 
 {% block content %}
-<!--<div class="card text-center mx-auto">
+ <div class="card text-center mx-auto">  
     <div class="card-body mx-auto">
 
-        <form method="post"  enctype="multipart/form-data" >{% csrf_token %}
-            <h3>¿Desea actualizar la fecha de devolución ?</h3>
-            <div class="form-group">
-                <label for="">Fecha del prestamo
-                    (Dia,Mes,Año) 
-                     {{ form.fecha_prestamo|add_class:"form-control"}}</label>
-               
-                {% comment %} {{ form.fecha_prestamo }} {% endcomment %}
+        <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+            <h3>¿Desea actualizar la fecha de devolución ?</h3>            
+            <div class="form-group ">
+                <label for="">Fecha a Devolver</label>
+                 <!-- -->     {{form.fecha_devolucion |add_class:"dateinput form-control text-center"}}         
+                {% comment %} {{form.fecha_devolucion}} {% endcomment %}
             </div>
-            <div class="form-group">
-                <label for="">Fecha a Devolver (Año,Mes, Dia)
-                    {{ form.fecha_devolucion |add_class:"form-control" }}
-                </label>
-               
-            </div>
-            <button type="submit" class="btn btn-success">Actualizar fecha de prestamos</button>
+            <button type="submit" class="btn btn-success">Actualizar</button>
         </form>       
     </div>
-</div> 
--->
+</div>  
 
-<div class="card text-center mx-auto">                                 
+{% comment %} <div class="card text-center mx-auto">                                 
     <div class="card-body mx-auto">
     
     <form method="post" enctype="multipart/form-data" >    {% csrf_token %}
-        {% bootstrap_form form button_type='submit' button_css_classes='btn btn-success' %}
+        {% bootstrap_form form button_type='submit' button_css_classes='btn btn-success' form_class='dateinput form-control text-center' %}
         <button type="submit" class="btn btn-success">Actualizar</button>
     </form>
     </div>
-    </div>
+    </div>  {% endcomment %}
 
 {% endblock content %}
     
+
 

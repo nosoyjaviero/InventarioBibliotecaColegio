@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',    
     'widget_tweaks',    
     'django_bootstrap5',
+    'bootstrap4',
     'apps.inventario',
 ]
 

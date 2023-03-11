@@ -1,10 +1,8 @@
-<!doctype html>
-<html lang="us">
-<head>
-	<meta charset="utf-8">
-	<title>jQuery UI Example Page</title>
-	<link href="jquery-ui.css" rel="stylesheet">
-	<style>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
 	body{
 		font-family: "Trebuchet MS", sans-serif;
 		margin: 50px;
@@ -47,9 +45,16 @@
 		width: 200px;
 	}
 	</style>
-</head>
+{% endblock style %}
+	
+	
+
 <body>
 
+	
+	{% block content %}
+		
+	
 <h1>Welcome to jQuery UI!</h1>
 
 <div class="ui-widget">
@@ -499,5 +504,8 @@ $( "#dialog-link, #icons li" ).hover(
 	}
 );
 </script>
+	{% endblock content %}
+		
+
 </body>
-</html>
+

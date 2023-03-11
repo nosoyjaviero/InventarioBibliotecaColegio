@@ -20,9 +20,8 @@ urlpatterns = [
    path('cargar_libro', views.cargar_libros, name="cargar_libros"),
    
    
-#   path('otra_vista/<seccion>/', views.otra_vista, name='otra_vista'),
-    path('prueba/', views.Prueba, name='prueba'),
-    path('otra_vista/<seccion_id>/', views.otra_vista, name='otra_vista'),
+    path('prueba/', views.Secciones, name='prueba'),
+    path('otra_vista/<seccion_id>/', views.SeleccionarUsuario, name='otra_vista'),
        
        
    path('prestamo/<pk>/', views.DevolverPrestamo.as_view(), name='devolver_ejemplar'),
