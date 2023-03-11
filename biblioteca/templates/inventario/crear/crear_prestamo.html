@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
+
 
 {% block title %}
 Crear Prestamo

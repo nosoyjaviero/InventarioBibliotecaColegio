@@ -1,15 +1,35 @@
-
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
+{% load widget_tweaks %}
+
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
 
 
-{% block content %}     
-<div class="card text-center mx-auto">                                 
-<div class="card-body mx-auto">
+{% block content %}  
 
-<form method="post" enctype="multipart/form-data" >    {% csrf_token %}
-    {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
-    <button type="submit" class="btn btn-success">Actualizar</button>
-</form>
+<div class="card text-center mx-auto">  
+    <div class="card-body mx-auto">
+
+        <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+            <h3>Editar Libro</h3>            
+            <div class="form-group ">
+       
+        <label for="">Titulo</label>{{form.titulo |add_class:"form-control text-center"}}
+        <label for="">Autor</label>{{form.autor|add_class:"form-control text-center"}}
+        <!-- -->{{form.isbn|add_class:"form-control text-center"}}
+        <!-- -->{{form.editorial |add_class:"form-control text-center"}}
+        <!-- -->{{form.fecha_publicacion  |add_class:"dateinput form-control text-center"}}
+        <!-- -->{{form.num_paginas |add_class:"form-control text-center"}}
+        <!-- -->{{form.avatar |add_class:"form-control text-center"}}
+
+        
+            </div>
+            <button type="submit" class="btn btn-success">Actualizar</button>
+        </form>       
+    </div>
+</div>  
+
 {% endblock  %}  

@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
-
+{% load widget_tweaks %}
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
 
 
 {% block title %}
@@ -12,25 +15,32 @@ Crear Nuevo Ejemplar
 
 
 
+
+
 {% block content %}
 
-<h1>Registrar Nuevo Ejemplar</h1>
 
-{% comment %} <form action="" method="post" enctype="multipart/form-data"> {% csrf_token %}
-    {{form}}
-<button type="submit" class="button success">Guardar</button>
-</form> {% endcomment %}
 
-<div class="container">
+<div class="card text-center mx-auto">  
+  <div class="card-body mx-auto">
 
- 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
-        <button type="submit" class="btn btn-primary">Guardar</button>
+      <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+          <h3>Crear Nuevo Ejemplar</h3>            
+          <div class="form-group ">
+            <label for="">Libro</label>{{form.libro|add_class:"form-control text-center" |attr:"placeholder: Título del libro"}}
+            <label for="">Estado</label>{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
+            <label for="">Ubicacion</label>{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
+            <label for="">Fecha Adquision</label>{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}
+            <label for="">Ultima Revisiom</label>{{form.ultima_revision  |add_class:"dateinput form-control text-center"|attr:"placeholder: Ultima Revisión" }}
+            <label for="">Cantidad</label>{{form.cantidad |add_class:"form-control text-center"|attr:"placeholder: Cantidad"}}       
+            <label for="">Comentario</label>{{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
 
-      </form>
-</div>
+      
+          </div>
+          <button type="submit" class="btn btn-success">Crear</button>
+      </form>       
+  </div>
+</div>  
 
    
 {% endblock content %}

@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
+
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
 
 
 {% block title %}
@@ -13,14 +18,20 @@ Crear Multa
 
 {% block content %}
 
-<h1>Registrar Nueva Multa</h1>
+  <div class="card text-center mx-auto">  
+    <div class="card-body mx-auto">
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
-    <button type="submit" class="btn btn-primary">Guardar</button>
+        <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+            <h3>Crear Munta</h3>            
+            <div class="form-group ">
+        <label for="">Prestamo</label>{{form.prestamo |add_class:"form-control text-center"}}
+        <label for="">Fecha Emision</label>{{form.fecha_emision |add_class:"dateinput form-control text-center"}}
+        <label for="">Monto</label>{{form.monto|add_class:"form-control text-center"}}
+        <label for="">Estado</label>{{form.estado |add_class:"form-control text-center"}}
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
 
-  </form>
-
-
+        </form>       
+    </div>
+</div>  
 {% endblock content %}

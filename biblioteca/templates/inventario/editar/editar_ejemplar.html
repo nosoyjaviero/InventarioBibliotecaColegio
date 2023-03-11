@@ -2,16 +2,35 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
+{% load widget_tweaks %}
 
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
 
 {% block content %}     
 <div class="card text-center mx-auto">                                 
 <div class="card-body mx-auto">
 
-<form method="post" enctype="multipart/form-data" >    {% csrf_token %}
-    {% bootstrap_form form  button_type='submit' button_css_classes='btn btn-success' %}
-    <button type="submit" class="btn btn-success">Actualizar</button>
-</form>
-</div>
-</div>
+
+
+
+    <div class="card-body mx-auto">
+
+        <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+            <h3>Editar {{object.libro.titulo}}</h3>            
+            <div class="form-group grid-margin-x ">
+        <!-- -->{{form.libro|add_class:"form-control text-center" |attr:"placeholder: Título del libro"}}
+        <!-- -->{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
+        <!-- -->{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
+        <!-- -->{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}
+        <!-- -->{{form.ultima_revision  |add_class:"dateinput form-control text-center"|attr:"placeholder: Ultima Revisión" }}
+        <!-- -->{{form.cantidad |add_class:"form-control text-center"|attr:"placeholder: Cantidad"}}       
+                 {{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
+       
+    </div>
+            <button type="submit" class="btn btn-success">Actualizar</button>
+        </form>       
+    </div>
+ 
 {% endblock  %}  

@@ -17,23 +17,14 @@
             <h3>¿Desea actualizar la fecha de devolución ?</h3>            
             <div class="form-group ">
                 <label for="">Fecha a Devolver</label>
-                 <!-- -->     {{form.fecha_devolucion |add_class:"dateinput form-control text-center"}}         
-                {% comment %} {{form.fecha_devolucion}} {% endcomment %}
+        <!-- -->{{form.fecha_devolucion |add_class:"dateinput form-control text-center"}}
             </div>
             <button type="submit" class="btn btn-success">Actualizar</button>
         </form>       
     </div>
 </div>  
 
-{% comment %} <div class="card text-center mx-auto">                                 
-    <div class="card-body mx-auto">
-    
-    <form method="post" enctype="multipart/form-data" >    {% csrf_token %}
-        {% bootstrap_form form button_type='submit' button_css_classes='btn btn-success' form_class='dateinput form-control text-center' %}
-        <button type="submit" class="btn btn-success">Actualizar</button>
-    </form>
-    </div>
-    </div>  {% endcomment %}
+
 
 {% endblock content %}
     
