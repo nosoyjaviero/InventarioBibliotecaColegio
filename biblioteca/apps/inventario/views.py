@@ -145,6 +145,7 @@ class PrestamosVencidos(ListView):
             devuelto=False,
             ejemplar__libro__titulo__icontains=palabra_clave)       
         return lista
+    
 class DevolverPrestamo(UpdateView):
     template_name = 'inventario/devolucion.html'
     model = Prestamo
@@ -157,29 +158,31 @@ class DevolverPrestamo(UpdateView):
             # restar 1 a la cantidad de Ejemplar
             
             ejemplar = prestamo.ejemplar
+            
             if (ejemplar.cantidad == 0 and ejemplar.estado=='prestado'):
-                
+                print("entre aqui 1")
                 ejemplar.cantidad +=1
                 ejemplar.estado='disponible'
                 ejemplar.save()
-                
-            if (ejemplar.cantidad >0 and ejemplar.estado=='disponible'):                
+                return super().form_valid(form)
+            
+            if (ejemplar.cantidad >0 and ejemplar.estado=='disponible'): 
+                print("entre aqui 1")               
                 ejemplar.cantidad +=1
                 ejemplar.save()
+                return super().form_valid(form)
         else:
             # si no se confirma la devolución, solo guardar el registro de Prestamo
             return super().form_valid(form)
         
         return super().form_valid(form)
       
-    
 class ActualizarFechaPrestamo(UpdateView):
     template_name = 'inventario/editar/actualizar_fecha.html'
     model = Prestamo
     fields=['fecha_devolucion']
     # fields=('__all__')  
     success_url = reverse_lazy('app_inventario:inicio')
-
 
 class EditarLibro(UpdateView):
     template_name = "inventario/editar/editar_libro.html"
@@ -220,76 +223,48 @@ class MultaCreateView(CreateView):
     fields=('__all__')
 
     success_url= reverse_lazy('app_inventario:inicio')
-  
-# class PrestamoCreateView(CreateView):
-    
-#     template_name = "inventario/crear/crear_prestamo.html"
-#     model = Prestamo
-#     fields=('__all__')
 
-#     success_url= reverse_lazy('app_inventario:inicio')   
-    
-#     def get_form(self, form_class=None):
-#         form = super().get_form(form_class)
-#         form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
-#         return form
-    
-#     def form_valid(self, form):
-#         # Restar un ejemplar de la cantidad
-#         ejemplar = form.instance.ejemplar
-#         ejemplar.cantidad -= 1
-#         ejemplar.save()
-#         if (ejemplar.cantidad==0):
-#             ejemplar.estado='prestado'
-#             ejemplar.save()
 
-#         # Continuar con el procesamiento del formulario
-#         return super().form_valid(form)
-    
-#     # def post(self, request, *args, **kwargs):
-#     #     seccion_id = request.GET.get('seccion')
-#     #     # Hacer algo con la sección seleccionada
-#     #     print(seccion_id)
+class PrestamoCreateView(CreateView, FormMixin):
+    template_name = "inventario/crear/crear_prestamo.html"
+    form_class = PrestamoForm
+    success_url = reverse_lazy('app_inventario:inicio')
 
-#     #     return super().post(request, *args, **kwargs)
-    
-    
-   
-#     # def form_valid(self, form):
-#     #     # Obtiene el objeto Ejemplar seleccionado en el formulario
-#     #     ejemplar = form.cleaned_data['ejemplar']
-#     #     # Obtiene el libro correspondiente al Ejemplar
-#     #     libro = ejemplar.libro
-#     #     # Comprueba si hay ejemplares disponibles del libro
-#     #     ejemplares_disponibles = libro.ejemplar_set.filter(estado='disponible').count()
-#     #     print(libro)
-#     #     if ejemplares_disponibles > 0:
-#     #         # Si hay ejemplares disponibles, realiza el préstamo normalmente
-#     #         ejemplar.cantidad -= 1
-#     #         ejemplar.save()
-#     #         return super().form_valid(form)
-        
-#     #     else:
-#     #         # Si no hay ejemplares disponibles, muestra un mensaje de error y redirige de vuelta al formulario
-#     #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
-#     #         return self.form_invalid(form)
+    def form_valid(self, form):
+        # Obtener el ID del usuario y comprobar si existe
+        id_usuario = form.cleaned_data['id_usuario']
+        usuario = None
+        try:
+            usuario = Usuario.objects.get(id=id_usuario)
+        except Usuario.DoesNotExist:
+            print('No existe usuario con este ID')
+            form.add_error('id_usuario', 'No existe usuario con este ID')
 
-        
-        
-        
-        
-#     # def form_valid(self, form):
-#     #     # Obtiene el objeto Ejemplar seleccionado en el formulario
-#     #     ejemplar = form.cleaned_data['ejemplar']
-#     #     # Verifica si el estado del Ejemplar es 'prestado'
-#     #     if ejemplar.estado == 'prestado':
-#     #         # Si el estado es 'prestado', redirige de vuelta al formulario con un mensaje de error
-#     #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
-#     #         # return HttpResponseBadRequest("No hay ejemplares disponibles para prestar.")
-#     #     else:
-#     #         # Si el estado es diferente a 'prestado', realiza el préstamo normalmente
-#     #         return super().form_valid(form)
-    
+        # Obtener el ID del ejemplar y comprobar si existe y está disponible
+        id_ejemplar = form.cleaned_data['id_ejemplar']
+        ejemplar = None
+        try:
+            ejemplar = Ejemplar.objects.get(id=id_ejemplar, estado='disponible')
+        except Ejemplar.DoesNotExist:
+            print('No existe ejemplar con este ID o no está disponible')
+            form.add_error('id_ejemplar', 'No existe ejemplar con este ID o no está disponible')
+
+        # Si el usuario y el ejemplar existen, crear el préstamo
+        if usuario and ejemplar:
+            form.instance.usuario = usuario
+            form.instance.ejemplar = ejemplar
+
+            # Actualizar el estado del ejemplar y la cantidad disponible
+            ejemplar.cantidad -= 1
+            if ejemplar.cantidad == 0:
+                ejemplar.estado = 'prestado'
+            ejemplar.save()
+
+            # Continuar con el procesamiento del formulario
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+ 
 def cargar_libros(request):
     if request.method == 'POST':
         archivo = request.FILES['csv_file']
@@ -457,47 +432,6 @@ def cargar_usuarios(request):
 #         return redirect("app_inventario:inicio")
 
 #     return render(request, "inventario/devolucion.html", {"prestamo": prestamo})
-
-
-
-class PrestamoCreateView(CreateView,FormMixin ):
-    
-    template_name = "inventario/crear/crear_prestamo.html"
-    form_class = PrestamoForm
-    success_url= reverse_lazy('app_inventario:inicio')   
-    
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
-        return form
-    
-    def form_valid(self, form):
-        # Obtener el ID del usuario y comprobar si existe
-        id_usuario = form.cleaned_data['id_usuario']
-        usuario = None
-        try:
-            usuario = Usuario.objects.get(id=id_usuario)
-        except Usuario.DoesNotExist:
-            print('No existe usuario con este ID')
-            form.add_error('id_usuario', 'No existe usuario con este ID')
-
-        # Si el usuario existe, crear el préstamo
-        if usuario:
-            form.instance.usuario = usuario
-
-            # Restar un ejemplar de la cantidad
-            ejemplar = form.instance.ejemplar
-            ejemplar.cantidad -= 1
-            ejemplar.save()
-            if (ejemplar.cantidad==0):
-                ejemplar.estado='prestado'
-                ejemplar.save()
-
-            # Continuar con el procesamiento del formulario
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
-
 
 class UsuarioSearchView(ListView):
     model = Usuario

@@ -94,12 +94,7 @@ class Prestamo(models.Model):
 
     def actualizar_cantidad_ejemplar(self):
         if self.ejemplar.cantidad == 0:
-            # messages.error(self.request, "No hay ejemplares disponibles para prestar.")
             pass
-            # self.ejemplar.set_no_disponible()
-            # self.ejemplar.estado = 'prestado'
-            # self.ejemplar.save()
-            # raise ValidationError('No hay ejemplares disponibles para prestar.')
         else:
             self.ejemplar.cantidad -= 1
             self.ejemplar.save()

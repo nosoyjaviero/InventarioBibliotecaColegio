@@ -19,14 +19,13 @@
 
         <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
             <h3>Editar {{object.libro.titulo}}</h3>            
-            <div class="form-group grid-margin-x ">
-        <!-- -->{{form.libro|add_class:"form-control text-center" |attr:"placeholder: Título del libro"}}
-        <!-- -->{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
-        <!-- -->{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
-        <!-- -->{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}
-        <!-- -->{{form.ultima_revision  |add_class:"dateinput form-control text-center"|attr:"placeholder: Ultima Revisión" }}
-        <!-- -->{{form.cantidad |add_class:"form-control text-center"|attr:"placeholder: Cantidad"}}       
-                 {{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
+            <div class="form-group grid-margin-x ">     
+       <label for="">Estado</label>{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
+       <label for="">Ubicacion</label>{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
+       <label for="">Fecha Adquirido</label>{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}
+       <label for="">Ultima Revision</label>{{form.ultima_revision  |add_class:"dateinput form-control text-center"|attr:"placeholder: Ultima Revisión" }}
+       <label for="">Cantidad</label>{{form.cantidad |add_class:"form-control text-center"|attr:"placeholder: Cantidad"}}       
+       <label for="">Comentarios</label>{{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
        
     </div>
             <button type="submit" class="btn btn-success">Actualizar</button>

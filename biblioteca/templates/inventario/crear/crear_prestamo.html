@@ -37,24 +37,41 @@ Crear Prestamo
     <div class="form-group grid-margin-x">
 
       {% if form.id_usuario.errors %}
+
       <div class="alert alert-danger">
-          {{ form.id_usuario.errors }}
-          <label for="id_usuario">ID Usuario</label>
-      {{ form.id_usuario|add_class:"form-control text-center"}}
-      </div>
-      {% else %}
+      {{ form.id_usuario.errors }}
       <label for="id_usuario">ID Usuario</label>
       {{ form.id_usuario|add_class:"form-control text-center"}}
-   
-    {% endif %}
+      </div>
 
-     
-      <label for="ejemplar">Ejemplar</label>
-      {{ form.ejemplar|add_class:"form-control text-center" }}
-   
+      {% else %}
+
+      <label for="id_usuario">ID Usuario</label>
+      {{ form.id_usuario|add_class:"form-control text-center"}}
+
+      {% endif %}
+
+      <div class="form-group">
+        {% if form.id_ejemplar.errors %}       
+
+        <div class="alert alert-danger">
+          {{ form.id_ejemplar.errors }}
+          <label for="id_ejemplar">ID Usuario</label>
+          {{ form.id_ejemplar|add_class:"form-control text-center"}}
+          </div>
+          {% else %}
+          <label for="id_ejemplar">Ejemplar ID</label>
+          {{ form.id_ejemplar|add_class:"form-control text-center" }}
+
+        {% endif %}
+    
+      </div>
+      
       <label for="fecha_prestamo">Fecha prestamo</label>
       {{ form.fecha_prestamo |add_class:"dateinput form-control text-center" }}
-   
+      <label for="form.fecha_devolucion">Fecha Devolucion</label>
+      {{ form.fecha_devolucion |add_class:"dateinput form-control text-center" }}
+
     </div>
     <button type="submit" class="btn btn-success">Guardar</button>
   </form>

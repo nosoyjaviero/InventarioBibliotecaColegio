@@ -13,55 +13,45 @@
 
     
 <div class="grid-container">
-    <div class="grid-x">
-        <h1 class="cell">Lista de Usuarios</h1>
-       
-        {% include 'includes/busqueda.html' %}
-        <div class="cell ">
-
-          <table class="table">
-            <thead>
-              <tr>
-                
-                <th width="200" class="text-center" scope="col">ID</th>
-                <th width="200" class="text-center" scope="col">Nombre</th>
-                <th width="200" class="text-center" scope="col">Apellido</th>
-                <th width="200" class="text-center" scope="col">Cedula</th>
-                <th width="200" class="text-center" scope="col">Direccion</th>
-                <th width="200" class="text-center" scope="col">Telefono</th>
-                <th width="200" class="text-center" scope="col">Correo Electronico</th>
-                <th width="200" class="text-center" scope="col">Seccion</th>
-              </tr>
-            </thead>
-      
-            <tbody>
+  <div class="grid-x">
+    <h1 class="cell">Lista de Usuarios</h1>
+    {% include 'includes/busqueda.html' %}
+    <div class="cell">
+      <div class="table-responsive scroll">
+        <table class="table">
+          <thead class="responsive-stack">
+            <tr>
+              <th width="200" class="text-center" scope="col">ID</th>
+              <th width="200" class="text-center" scope="col">Nombre</th>
+              <th width="200" class="text-center" scope="col">Apellido</th>
+              <th width="200" class="text-center" scope="col">Cedula</th>
+              <th width="200" class="text-center" scope="col">Direccion</th>
+              <th width="200" class="text-center" scope="col">Telefono</th>
+              <th width="200" class="text-center" scope="col">Correo Electronico</th>
+              <th width="200" class="text-center" scope="col">Seccion</th>
+            </tr>
+          </thead>
+          <tbody>
             {% for e in object_list %}
-                        <tr>
-                          <td scope="row" class="text-center">{{e.id}}</td>
-                          <td scope="row" class="text-center">{{e.nombre}}</td>
-                          <td scope="row" class="text-center">{{e.apellido}}</td>
-                          <td scope="row" class="text-center">{{e.cedula}}</td>
-                          <td scope="row" class="text-center">{{e.direccion}}</td>  
-                          <td scope="row" class="text-center">{{e.telefono}}</td>  
-                          <td scope="row" class="text-center">{{e.correo_electronico}}</td>  
-                          <td scope="row" class="text-center">{{e.seccion}}</td>  
-                          {% comment %} <td><a class="button warning" href="{% url 'persona_app:empleado_detail' e.id %}">Ver</a> {% endcomment %}
-                                         
-                        </tr>
-                          {% endfor %}
-                        
-                      </tbody>
-      
-      
-        
-          </table>
-
-          
-        </div>
-
-        {% include 'includes/paginacion.html' %}
+            <tr>
+              <td scope="row" class="text-center">{{e.id}}</td>
+              <td scope="row" class="text-center">{{e.nombre}}</td>
+              <td scope="row" class="text-center">{{e.apellido}}</td>
+              <td scope="row" class="text-center">{{e.cedula}}</td>
+              <td scope="row" class="text-center">{{e.direccion}}</td>  
+              <td scope="row" class="text-center">{{e.telefono}}</td>  
+              <td scope="row" class="text-center">{{e.correo_electronico}}</td>  
+              <td scope="row" class="text-center">{{e.seccion}}</td>  
+              {% comment %} <td><a class="button warning" href="{% url 'persona_app:empleado_detail' e.id %}">Ver</a> {% endcomment %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-
+    {% include 'includes/paginacion.html' %}
+  </div>
+</div>
     
 
     
