@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
+
+
 
 
 {% block title %}
@@ -10,18 +16,26 @@ Crear Usuario
 
 
 
-
 {% block content %}
 
-<h1>Registrar Nuevo Usuario</h1>
+<div class="card-body mx-auto">
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% bootstrap_form form layout='horizontal' button_type='submit' button_css_classes='button success' %}
-    <button type="submit" class="btn btn-primary">Guardar</button>
+  <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
 
-  </form>
+      <h3>Crear Usuario</h3>            
+      <div class="form-group grid-margin-x ">
+  <label for="">Nombre</label>{{form.nombre |add_class:"form-control text-center" |attr:"placeholder: Nombre"}}
+  <label for="">Cedula</label>{{form.cedula |add_class:"form-control text-center" |attr:"placeholder: Apellido"}}
+  <label for="">Direccion</label>{{form.direccion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Direccion"}}
+  <label for="">Telefono</label>{{form.telefono |add_class:"form-control text-center"|attr:"placeholder: Telefono"}}
+  <label for="">Correo Electrico</label>{{form.correo_electronico |add_class:"form-control text-center"|attr:"placeholder: Correo Electronico"}}
+  <label for="">Seccion</label>{{form.seccion |add_class:"form-control text-center"|attr:"placeholder: Seccion"}}
 
+
+</div>
+      <button type="submit" class="btn btn-success">Guardar</button>
+  </form>       
+</div>
 
 {% endblock content %}
 

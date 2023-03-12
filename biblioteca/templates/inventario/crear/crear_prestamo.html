@@ -5,7 +5,7 @@
 {% block jquerycode %}
 <script src="{% static 'js/custom.js' %}"></script>
 {% endblock jquerycode %}
-
+{% load custom_filters %}
 
 {% block title %}
 Crear Prestamo
@@ -13,24 +13,81 @@ Crear Prestamo
 
 
 
-
-
 {% block content %}
 
 
 
-<div class="container">
-    <h1>Registrar Nuevo Prestamo</h1>
- 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="text-center">
-          {% bootstrap_form form exclude="comentarios, devuelto" layout='horizontal' button_type='submit' button_css_classes='button success' %}
-      </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
 
-      </form>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card-body mx-auto">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h3>Crear Prestamo</h3>
+    <div class="form-group grid-margin-x">
+
+      {% if form.id_usuario.errors %}
+      <div class="alert alert-danger">
+          {{ form.id_usuario.errors }}
+          <label for="id_usuario">ID Usuario</label>
+      {{ form.id_usuario|add_class:"form-control text-center"}}
+      </div>
+      {% else %}
+      <label for="id_usuario">ID Usuario</label>
+      {{ form.id_usuario|add_class:"form-control text-center"}}
+   
+    {% endif %}
+
+     
+      <label for="ejemplar">Ejemplar</label>
+      {{ form.ejemplar|add_class:"form-control text-center" }}
+   
+      <label for="fecha_prestamo">Fecha prestamo</label>
+      {{ form.fecha_prestamo |add_class:"dateinput form-control text-center" }}
+   
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+  </form>
+</div>
+{% endblock content %}
+  
+
+
+
+
+
+
+
+
+{% comment %} {% block content %}
+
+
+
+
+<div class="card-body mx-auto">
+
+  <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+      <h3>Crear Prestamo</h3>            
+      <div class="form-group grid-margin-x ">
+  <label for="">Usuario</label>{{form.usuario|add_class:"form-control text-center" |attr:"placeholder: Usuario"}}
+  <label for="">Ejemplar</label>{{form.ejemplar |add_class:"form-control text-center" |attr:"placeholder: Ejemplar"}}
+  <label for="">Ubicacion</label>{{form.fecha_prestamo |add_class:" form-control text-center" |attr:"placeholder: Ubicacion"}}
+  <label for="">Fecha prestamo</label>{{form.fecha_devolucion|add_class:" dateinput form-control text-center"|attr:"placeholder: Fecha de Prestamo"}}
+  
+ 
+</div>
+      <button type="submit" class="btn btn-success">Guardar</button>
+  </form>       
 </div>
 
-
-{% endblock content %}
+{% endblock content %} {% endcomment %}

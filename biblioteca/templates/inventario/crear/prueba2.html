@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load widget_tweaks %}
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+<script>
+    function cargarUsuarios() {
+      var seccionSeleccionada = document.getElementById("seccion").value;
+      var selectUsuarios = document.getElementById("usuarios");
+      
+      // Limpiar opciones anteriores
+      selectUsuarios.innerHTML = "";
+      
+      // Obtener usuarios de la sección seleccionada
+      var usuarios = [];
+      {% for usuario in usuarios %}
+        if ("{{ usuario.seccion }}" === seccionSeleccionada) {
+          usuarios.push("{{ usuario.nombre }} {{ usuario.apellido }}");
+        }
+      {% endfor %}
+      
+      // Agregar opciones al select de usuarios
+      for (var i = 0; i < usuarios.length; i++) {
+        var option = document.createElement("option");
+        option.text = usuarios[i];
+        selectUsuarios.add(option);
+      }
+    }
+    </script>
+
+{% endblock jquerycode %}
+
+
+
+
+{% block title %}
+Crear Prestamo
+{% endblock title %}
+
+
+
+{% block content %}
+{{usuarios}}
+<select name="seccion" id="seccion" onchange="cargarUsuarios()">
+    
+    {% for usuario in usuarios %}
+      <option value="{{ usuario.seccion }}">{{ usuario.seccion }}</option>
+    {% endfor %}
+  </select>
+  
+  <select name="usuarios" id="usuarios"></select>
+{% endblock content %}
+    

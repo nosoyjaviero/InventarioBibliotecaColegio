@@ -1,19 +1,21 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
-from django.http import HttpResponseBadRequest
+
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 
-
+from django.http import JsonResponse
+from django.db.models import Q
 from django.utils import timezone
 from datetime import date
 from datetime import timedelta
 import csv
+from functools import partial
 
-from .forms import Prueba
+from .forms import PrestamoForm
 
 from .models import Libro, Prestamo, Usuario, Ejemplar,Multa
 
-
+from django.views.generic.edit import FormMixin
 from django.views.generic import (
     View,
      ListView,
@@ -25,7 +27,14 @@ from django.views.generic import (
     )
 # Create your views here.
 
+def select_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'inventario/crear/prueba2.html', {'modelo_usuario': Usuario, 'usuarios': usuarios})
 
+def usuarios_por_seccion(request, seccion):
+    usuarios = Usuario.objects.filter(seccion=seccion)
+    data = [{'id': usuario.id, 'nombre': usuario.nombre, 'apellido': usuario.apellido} for usuario in usuarios]
+    return JsonResponse(data, safe=False)
 # class Prueba(CreateView):
 
 # En el ejemplo que has dado, ids = Prestamo.objects.values_list('id', flat=True), se está obteniendo una lista plana de los valores del campo id de todos los objetos en la tabla Prestamo. Es decir, se obtiene una lista de valores enteros en lugar de una lista de tuplas con un solo elemento que contiene un valor entero.
@@ -47,18 +56,6 @@ def Secciones(request):
         secciones = Usuario.objects.values_list('seccion', flat=True).distinct()
         return render(request, 'inventario/crear/crear_ejemplar1.html', {'secciones': secciones})
 
-
-      
-#     if request.method == 'POST':
-#         seccion_id = request.POST['seccion']
-#         # Hacer algo con el valor de seccion_id (por ejemplo, guardarlo en la base de datos)
-#         # Redirigir a la vista que muestra el siguiente formulario
-#         url = reverse('app_inventario:otra_vista', kwargs={'seccion_id': seccion_id})
-#         return redirect(url)
-#     else:
-#         # Obtener todos los usuarios y pasarlos al formulario
-#         usuarios = Usuario.objects.all()
-#         return render(request, 'inventario/crear/crear_ejemplar1.html', {'usuarios': usuarios})
     
 def SeleccionarUsuario(request, seccion_id=None):
     if seccion_id is not None:
@@ -224,74 +221,74 @@ class MultaCreateView(CreateView):
 
     success_url= reverse_lazy('app_inventario:inicio')
   
-class PrestamoCreateView(CreateView):
+# class PrestamoCreateView(CreateView):
     
-    template_name = "inventario/crear/crear_prestamo.html"
-    model = Prestamo
-    fields=('__all__')
+#     template_name = "inventario/crear/crear_prestamo.html"
+#     model = Prestamo
+#     fields=('__all__')
 
-    success_url= reverse_lazy('app_inventario:inicio')   
+#     success_url= reverse_lazy('app_inventario:inicio')   
     
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
-        return form
+#     def get_form(self, form_class=None):
+#         form = super().get_form(form_class)
+#         form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
+#         return form
     
-    def form_valid(self, form):
-        # Restar un ejemplar de la cantidad
-        ejemplar = form.instance.ejemplar
-        ejemplar.cantidad -= 1
-        ejemplar.save()
-        if (ejemplar.cantidad==0):
-            ejemplar.estado='prestado'
-            ejemplar.save()
+#     def form_valid(self, form):
+#         # Restar un ejemplar de la cantidad
+#         ejemplar = form.instance.ejemplar
+#         ejemplar.cantidad -= 1
+#         ejemplar.save()
+#         if (ejemplar.cantidad==0):
+#             ejemplar.estado='prestado'
+#             ejemplar.save()
 
-        # Continuar con el procesamiento del formulario
-        return super().form_valid(form)
+#         # Continuar con el procesamiento del formulario
+#         return super().form_valid(form)
     
-    def post(self, request, *args, **kwargs):
-        seccion_id = request.GET.get('seccion')
-        # Hacer algo con la sección seleccionada
-        print(seccion_id)
+#     # def post(self, request, *args, **kwargs):
+#     #     seccion_id = request.GET.get('seccion')
+#     #     # Hacer algo con la sección seleccionada
+#     #     print(seccion_id)
 
-        return super().post(request, *args, **kwargs)
+#     #     return super().post(request, *args, **kwargs)
     
     
    
-    # def form_valid(self, form):
-    #     # Obtiene el objeto Ejemplar seleccionado en el formulario
-    #     ejemplar = form.cleaned_data['ejemplar']
-    #     # Obtiene el libro correspondiente al Ejemplar
-    #     libro = ejemplar.libro
-    #     # Comprueba si hay ejemplares disponibles del libro
-    #     ejemplares_disponibles = libro.ejemplar_set.filter(estado='disponible').count()
-    #     print(libro)
-    #     if ejemplares_disponibles > 0:
-    #         # Si hay ejemplares disponibles, realiza el préstamo normalmente
-    #         ejemplar.cantidad -= 1
-    #         ejemplar.save()
-    #         return super().form_valid(form)
+#     # def form_valid(self, form):
+#     #     # Obtiene el objeto Ejemplar seleccionado en el formulario
+#     #     ejemplar = form.cleaned_data['ejemplar']
+#     #     # Obtiene el libro correspondiente al Ejemplar
+#     #     libro = ejemplar.libro
+#     #     # Comprueba si hay ejemplares disponibles del libro
+#     #     ejemplares_disponibles = libro.ejemplar_set.filter(estado='disponible').count()
+#     #     print(libro)
+#     #     if ejemplares_disponibles > 0:
+#     #         # Si hay ejemplares disponibles, realiza el préstamo normalmente
+#     #         ejemplar.cantidad -= 1
+#     #         ejemplar.save()
+#     #         return super().form_valid(form)
         
-    #     else:
-    #         # Si no hay ejemplares disponibles, muestra un mensaje de error y redirige de vuelta al formulario
-    #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
-    #         return self.form_invalid(form)
+#     #     else:
+#     #         # Si no hay ejemplares disponibles, muestra un mensaje de error y redirige de vuelta al formulario
+#     #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
+#     #         return self.form_invalid(form)
 
         
         
         
         
-    # def form_valid(self, form):
-    #     # Obtiene el objeto Ejemplar seleccionado en el formulario
-    #     ejemplar = form.cleaned_data['ejemplar']
-    #     # Verifica si el estado del Ejemplar es 'prestado'
-    #     if ejemplar.estado == 'prestado':
-    #         # Si el estado es 'prestado', redirige de vuelta al formulario con un mensaje de error
-    #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
-    #         # return HttpResponseBadRequest("No hay ejemplares disponibles para prestar.")
-    #     else:
-    #         # Si el estado es diferente a 'prestado', realiza el préstamo normalmente
-    #         return super().form_valid(form)
+#     # def form_valid(self, form):
+#     #     # Obtiene el objeto Ejemplar seleccionado en el formulario
+#     #     ejemplar = form.cleaned_data['ejemplar']
+#     #     # Verifica si el estado del Ejemplar es 'prestado'
+#     #     if ejemplar.estado == 'prestado':
+#     #         # Si el estado es 'prestado', redirige de vuelta al formulario con un mensaje de error
+#     #         messages.error(self.request, "No hay ejemplares disponibles para prestar.")
+#     #         # return HttpResponseBadRequest("No hay ejemplares disponibles para prestar.")
+#     #     else:
+#     #         # Si el estado es diferente a 'prestado', realiza el préstamo normalmente
+#     #         return super().form_valid(form)
     
 def cargar_libros(request):
     if request.method == 'POST':
@@ -460,3 +457,71 @@ def cargar_usuarios(request):
 #         return redirect("app_inventario:inicio")
 
 #     return render(request, "inventario/devolucion.html", {"prestamo": prestamo})
+
+
+
+class PrestamoCreateView(CreateView,FormMixin ):
+    
+    template_name = "inventario/crear/crear_prestamo.html"
+    form_class = PrestamoForm
+    success_url= reverse_lazy('app_inventario:inicio')   
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['ejemplar'].queryset = Ejemplar.objects.filter(estado='disponible')
+        return form
+    
+    def form_valid(self, form):
+        # Obtener el ID del usuario y comprobar si existe
+        id_usuario = form.cleaned_data['id_usuario']
+        usuario = None
+        try:
+            usuario = Usuario.objects.get(id=id_usuario)
+        except Usuario.DoesNotExist:
+            print('No existe usuario con este ID')
+            form.add_error('id_usuario', 'No existe usuario con este ID')
+
+        # Si el usuario existe, crear el préstamo
+        if usuario:
+            form.instance.usuario = usuario
+
+            # Restar un ejemplar de la cantidad
+            ejemplar = form.instance.ejemplar
+            ejemplar.cantidad -= 1
+            ejemplar.save()
+            if (ejemplar.cantidad==0):
+                ejemplar.estado='prestado'
+                ejemplar.save()
+
+            # Continuar con el procesamiento del formulario
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+class UsuarioSearchView(ListView):
+    model = Usuario
+    template_name = 'inventario/crear/buscar_usuario.html'
+    context_object_name = 'usuario_list'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Usuario.objects.filter(Q(nombre__icontains=query) | Q(apellido__icontains=query))
+        return Usuario.objects.none()
+
+
+class ListarUsuarios(ListView):
+    template_name= 'inventario/listar/listar_usuarios.html'
+    paginate_by=30
+    ordering='seccion'    
+    
+    def get_queryset(self):
+        
+        palabra_clave= self.request.GET.get("kword", '') #'
+        lista= Usuario.objects.filter(
+            nombre__icontains=palabra_clave
+        )
+        
+        
+        return lista

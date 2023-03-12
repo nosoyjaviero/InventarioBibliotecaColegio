@@ -1,11 +1,15 @@
+{% load django_bootstrap5 %}
+{% load static %}
+{% load widget_tweaks %}
+
 <form method='GET' class="cell grid-x grid-margin-x"> {% csrf_token %}
     <div class="cell large-7">
         <!--colocamos kword aqui en id y name -->
-        <input type="text" id="kword" name="kword" placeholder="Buscar libro"> 
+        <input type="text" id="kword" name="kword" placeholder="Buscar libro" class="form-control"> 
     </div>
         <!--button de foundation -->
     <div class="cell large-2">
-            <button type="submit" class="success button">Buscar</button>
+            <button type="submit" class="btn btn-success">Buscar</button>
     </div>            
   </form> 
   

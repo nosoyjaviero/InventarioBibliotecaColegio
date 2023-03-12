@@ -31,10 +31,9 @@ STATIC_URL = '/static/'
 static = BASE_DIR.child('static')
 css = static.child('css')
 img = static.child('img')
-jquery = static.child('jquery')
 js = static.child('js')
 
-STATICFILES_DIRS = [static, css,img, jquery,js,]
+STATICFILES_DIRS = [static, css,img, js,]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 

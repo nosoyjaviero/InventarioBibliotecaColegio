@@ -21,13 +21,19 @@ urlpatterns = [
    
    
     path('prueba/', views.Secciones, name='prueba'),
-    path('otra_vista/<seccion_id>/', views.SeleccionarUsuario, name='otra_vista'),
+   #  path('otra_vista/<seccion_id>/', views.SeleccionarUsuario, name='otra_vista'),
+   #  path('usuarios/por_seccion/<str:seccion>/', views.UsuarioPorSeccionListView.as_view(), name='usuarios_por_seccion'),
+   
+       path('prestamo/crear/', views.PrestamoCreateView.as_view(), name='crear_prestamo'),
+    path('usuario/buscar/', views.UsuarioSearchView.as_view(), name='buscar_usuario'),
+    path('prueba2', views.select_usuarios, name='prueba2'),
+  path('usuarios/<str:seccion>/', views.usuarios_por_seccion, name='usuarios_por_seccion'),
        
        
-   path('prestamo/<pk>/', views.DevolverPrestamo.as_view(), name='devolver_ejemplar'),
+   path('devolver-prestamo/<pk>/', views.DevolverPrestamo.as_view(), name='devolver_ejemplar'),
    path('fecha/<pk>/', views.ActualizarFechaPrestamo.as_view(), name='actualizar_fecha'),
        
-       
+
     #    Crear
        path('registrar-Libro/', views.LibroCreateView.as_view(), name='registrar_libro'),
        
@@ -38,11 +44,14 @@ urlpatterns = [
        path('registrar-Multa/', views.MultaCreateView.as_view(), name='registrar_multa'),
        
        path('registrar-Prestamo/', views.PrestamoCreateView.as_view(), name='registrar_prestamo'),
-    #   Fin CrearCrear
+    #   Fin Crear
    
    
    #listar
     path('prestamos/', views.libros_prestados.as_view(), name='prestamos'),
     path('prestamos-vencidos/', views.PrestamosVencidos.as_view(), name='prestamos-vencidos'),
+    path('listar-usuarios/', views.ListarUsuarios.as_view(), name='lista_usuarios'),
+    
+    
    #fin listar
 ]

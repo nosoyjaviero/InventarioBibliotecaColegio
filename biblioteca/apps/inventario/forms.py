@@ -1,13 +1,14 @@
 from django import forms
 from .models import Prestamo
+from django.forms.widgets import TextInput
 
-class DevolucionLibroForm(forms.ModelForm):
-    class Meta:
-        model = Prestamo
-        fields = ['devuelto']
-        labels = {
-            'devuelto': '¿Desea devolver el libro?',
-        }
+# class DevolucionLibroForm(forms.ModelForm):
+#     class Meta:
+#         model = Prestamo
+#         fields = ['devuelto']
+#         labels = {
+#             'devuelto': '¿Desea devolver el libro?',
+#         }
         
         
 # class CrearPrestamoForm(forms.ModelForm):
@@ -23,12 +24,10 @@ class DevolucionLibroForm(forms.ModelForm):
 #             'devuelto': forms.TextInput(attrs={'class': 'form-control'}),
 #         }
     
+
 class PrestamoForm(forms.ModelForm):
+    id_usuario = forms.CharField(label='ID Usuario')
+
     class Meta:
         model = Prestamo
-        fields = ['fecha_prestamo', 'fecha_devolucion', 'devuelto']
-        
-class Prueba(forms.ModelForm):
-    class Meta:
-        model = Prestamo
-        fields = ['fecha_prestamo', 'fecha_devolucion', 'devuelto']
+        fields = ['id_usuario', 'ejemplar', 'fecha_prestamo']
