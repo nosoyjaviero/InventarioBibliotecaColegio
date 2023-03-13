@@ -26,6 +26,12 @@ from django.forms.widgets import TextInput
     
 
 class PrestamoForm(forms.ModelForm):
+    """Este módulo define un formulario de modelo de Django llamado PrestamoForm. El formulario incluye los campos cedula_usuario, id_ejemplar, fecha_prestamo y fecha_devolucion del modelo Prestamo. 
+
+    Args:
+    forms (type): El tipo de objeto forms de Django que se utiliza para definir formularios. Los formularios se utilizan para generar formularios HTML automáticamente y manejar su validación en Django. Los formularios de modelo en Django se utilizan para interactuar con modelos de bases de datos.
+
+    """
     cedula_usuario = forms.CharField(label='Cédula Usuario')
     id_ejemplar = forms.CharField(label='ID Ejemplar')
 
@@ -34,6 +40,19 @@ class PrestamoForm(forms.ModelForm):
         fields = ['cedula_usuario', 'id_ejemplar', 'fecha_prestamo', 'fecha_devolucion' ]
         
 class EjemplarForm(forms.ModelForm):
+    """Este módulo define un formulario de modelo de Django llamado EjemplarForm. El formulario incluye el campo libro_id y los campos adicionales 'estado', 'ubicacion', 'fecha_adquisicion', 'ultima_revision', 'cantidad' y 'comentarios' del modelo Ejemplar.
+    
+    Args:
+        forms (type): El tipo de objeto forms de Django que se utiliza para definir formularios.
+
+    La función clean_libro_id se utiliza para validar el campo libro_id en el formulario. Si no se encuentra un libro con el ID proporcionado en la base de datos, se levantará una excepción forms.ValidationError.
+
+    Raises:
+        forms.ValidationError: Si no se encuentra un libro con el ID proporcionado.
+
+    Returns:
+        int: El ID del libro proporcionado en el formulario.
+    """
     libro_id = forms.IntegerField(label='ID del libro')
     
     class Meta:

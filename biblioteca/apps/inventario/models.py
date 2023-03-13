@@ -21,6 +21,14 @@ from django.dispatch import receiver
 
 
 class Libro(models.Model):
+    """Representa un libro en la base de datos.
+
+    Args:
+        models: El módulo de modelos de Django.
+
+    Returns:
+        Libro: Una instancia de la clase Libro.
+    """
     titulo = models.CharField(max_length=100)
     autor = models.CharField(max_length=100, blank=True ,null=True )
     isbn = models.CharField(max_length=20, blank=True ,null=True )
@@ -34,6 +42,22 @@ class Libro(models.Model):
         return self.titulo    
 
 class Usuario(models.Model):
+    """La clase Usuario representa a un usuario en el sistema
+    
+    Models (objeto): El módulo models de Django.
+
+    Returns:
+    objeto: Un objeto de la clase Usuario.
+    
+    Atributos:
+    nombre (cadena): El nombre del usuario.
+    apellido (cadena): El apellido del usuario.
+    cedula (cadena): La cédula del usuario.
+    direccion (cadena): La dirección del usuario.
+    telefono (cadena): El número de teléfono del usuario.
+    correo_electronico (cadena): El correo electrónico del usuario.
+    seccion (cadena): La sección del usuario.
+    """
     nombre = models.CharField(max_length=50)    
     apellido = models.CharField(max_length=50)
     cedula = models.CharField(max_length=20, null=True)
@@ -43,9 +67,38 @@ class Usuario(models.Model):
     seccion = models.CharField(max_length=20, null=True)
     
     def __str__(self):
+        """Returns:
+        str: Cadena que representa al objeto de la clase Usuario.
+        """
         return f"{self.nombre} {self.apellido} {self.seccion}"
 
 class Ejemplar(models.Model):
+    """
+    Modelo que representa un ejemplar de un libro.
+
+    Args:
+        models (type): Módulo de modelos de Django.
+
+    Returns:
+        type: Retorna un modelo de Ejemplar.
+
+    Atributos:
+        libro (ForeignKey): El libro asociado con este ejemplar.
+        opciones_estado (list): Lista de opciones para el estado de este ejemplar.
+        estado (CharField): El estado de este ejemplar (disponible, prestado, en reparación o extraviado).
+        ubicacion (CharField): La ubicación actual de este ejemplar.
+        fecha_adquisicion (DateField): La fecha en que se adquirió este ejemplar.
+        ultima_revision (DateField): La fecha en que se revisó este ejemplar por última vez.
+        cantidad (IntegerField): La cantidad de ejemplares de este libro disponibles.
+        comentarios (CharField): Cualquier comentario sobre este ejemplar.
+
+    Métodos:
+        __str__(): Retorna el título del libro asociado con este ejemplar.
+        set_disponible(): Establece el estado de este ejemplar como disponible.
+        set_no_disponible(): Establece el estado de este ejemplar como prestado.
+        incrementar_cantidad(): Incrementa la cantidad de ejemplares disponibles de este libro.
+        restar_cantidad(): Reduce la cantidad de ejemplares disponibles de este libro.
+    """
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     opciones_estado = [
         ('disponible', 'Disponible'),
@@ -61,23 +114,37 @@ class Ejemplar(models.Model):
     comentarios=models.CharField(max_length=300, blank=True ,null=True )
     
     def __str__(self):
+        """Retorna el título del libro asociado con este ejemplar."""
         return self.libro.titulo
 
     def set_disponible(self):
+        """Establece el estado de este ejemplar como disponible."""
         self.estado = 'disponible'
         self.save()
     def set_no_disponible(self):
+        """Establece el estado de este ejemplar como prestado."""
         self.estado = 'prestado'
         self.save()
     def incrementar_cantidad(self):
+        """Incrementa la cantidad de ejemplares disponibles de este libro."""
         self.cantidad += 1
         self.save()
     def restar_cantidad(self):
+        """Reduce la cantidad de ejemplares disponibles de este libro."""
         self.cantidad -= 1
         self.save()
 
 
 class Prestamo(models.Model):
+    """Modelo que representa el préstamo de un ejemplar de libro a un usuario.
+
+    Args:
+        models (django.db.models.Model): Clase modelo de Django.
+
+    Returns:
+        django.db.models.Model: Clase modelo de Django.
+    """
+    
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     ejemplar = models.ForeignKey(Ejemplar, on_delete=models.CASCADE)
     fecha_prestamo = models.DateField('Fecha Prestamo')
@@ -111,20 +178,24 @@ class Prestamo(models.Model):
 # En resumen, este código define una señal que se activa cada vez que se guarda un objeto "Prestamo" en la base de datos, y utiliza una función para actualizar la cantidad de ejemplares disponibles en un objeto relacionado "Ejemplar" cada vez que se guarda un objeto "Prestamo". Esto permite mantener actualizada la cantidad de ejemplares disponibles en la base de datos y evitar que se presten más ejemplares de los disponibles.
 
     def save(self, *args, **kwargs):
+        """Guarda el préstamo en la base de datos y establece la fecha de devolución en 15 días si no se especifica."""
         if not self.fecha_devolucion:
             self.fecha_devolucion = datetime.now().date() + timedelta(days=15)
         return super().save(*args, **kwargs)
     def __str__(self):
+        """Devuelve una cadena que representa el préstamo, en el formato 'título del libro - nombre del usuario'."""
         return f"{self.ejemplar.libro.titulo} - {self.usuario.nombre} {self.usuario.apellido}"
 
     @property
     def esta_atrasado(self):
+        """Devuelve True si el préstamo está atrasado, es decir, la fecha de devolución ha pasado y no ha sido devuelto."""
         if not self.fecha_devolucion_real and self.fecha_devolucion < datetime.now().date():
             return True
         return False
 
     @property
     def estado_devolucion(self):
+        """Devuelve el estado de la devolución del préstamo: 'Devuelto', 'Atrasado' o 'En préstamo'."""
         if self.fecha_devolucion_real:
             return "Devuelto"
         elif self.esta_atrasado:
@@ -133,6 +204,22 @@ class Prestamo(models.Model):
             return "En préstamo"
 
 class Multa(models.Model):
+    """
+    Representa la multa por un préstamo de un ejemplar de un libro.
+
+    Args:
+        models (type): Clase padre de la clase Multa en Django.
+
+    Attributes:
+        prestamo (ForeignKey): Ejemplar prestado a un usuario.
+        fecha_emision (DateField): Fecha de emisión de la multa.
+        monto (DecimalField): Monto de la multa.
+        opciones_estado (tuple): Opciones para el estado de la multa.
+        estado (CharField): Estado actual de la multa.
+
+    Methods:
+        __str__(): Devuelve la representación en cadena de la multa.
+    """
     prestamo = models.ForeignKey(Prestamo, on_delete=models.CASCADE)
     fecha_emision = models.DateField()
     monto = models.DecimalField(max_digits=8, decimal_places=2)
@@ -143,6 +230,12 @@ class Multa(models.Model):
     estado = models.CharField(max_length=10, choices=opciones_estado)
     
     def __str__(self):
+        """
+        Devuelve la representación en cadena de la multa.
+
+        Returns:
+            str: Representación en cadena de la multa.
+        """
         return f"{self.prestamo.usuario} - Estado: {self.estado} Libro:{self.prestamo.ejemplar.libro}" 
         
         
