@@ -28,10 +28,34 @@ from django.views.generic import (
 # Create your views here.
 
 def select_usuarios(request):
+    """La función select_usuarios renderiza la plantilla 'inventario/crear/prueba2.html' y pasa como contexto un diccionario con los objetos Usuario obtenidos desde la base de datos.Estas líneas de código corresponden a la función select_usuarios, que recibe una solicitud request como argumento y devuelve una respuesta HTTP que renderiza una plantilla HTML.
+
+    En la primera línea, se está declarando la variable usuarios que contiene todos los objetos de Usuario almacenados en la base de datos, utilizando el método all() de la clase Usuario.
+
+    En la segunda línea, se está utilizando la función render de Django para crear una respuesta HTTP que renderiza una plantilla HTML llamada prueba2.html, ubicada en la carpeta inventario/crear.
+
+    Finalmente, se está pasando un diccionario como tercer argumento a render, que contiene dos claves: modelo_usuario y usuarios. La clave modelo_usuario tiene como valor la clase Usuario, mientras que la clave usuarios tiene como valor la variable usuarios creada anteriormente. Esta información se utiliza dentro de la plantilla HTML para mostrar los usuarios disponibles en la base de datos.
+
+    Args:
+    request (HttpRequest): Objeto HttpRequest que contiene información acerca de la solicitud HTTP actual.
+
+    Returns:
+    HttpResponse: Objeto HttpResponse que contiene la respuesta HTTP resultante de la renderización de la plantilla. El contexto incluye el modelo de Usuario y los objetos Usuario obtenidos desde la base de datos.
+    """
     usuarios = Usuario.objects.all()
     return render(request, 'inventario/crear/prueba2.html', {'modelo_usuario': Usuario, 'usuarios': usuarios})
 
 def usuarios_por_seccion(request, seccion):
+    """Devuelve una respuesta HTTP en formato JSON que contiene los usuarios que pertenecen a una sección específica.
+    
+
+    Args:
+        request (HttpRequest): El objeto HttpRequest que representa la solicitud HTTP recibida.
+        seccion (str): El nombre de la sección para la que se desea recuperar los usuarios.
+
+    Returns:
+        JsonResponse: Una respuesta HTTP en formato JSON que contiene una lista de diccionarios, cada uno de los cuales representa un usuario y contiene las claves 'id', 'nombre' y 'apellido'.
+    """
     usuarios = Usuario.objects.filter(seccion=seccion)
     data = [{'id': usuario.id, 'nombre': usuario.nombre, 'apellido': usuario.apellido} for usuario in usuarios]
     return JsonResponse(data, safe=False)
@@ -277,6 +301,15 @@ class PrestamoCreateView(CreateView, FormMixin):
             return self.form_invalid(form)
  
 def cargar_libros(request):
+    """La función cargar_libros permite importar una lista de libros desde un archivo CSV en la base de datos. Si el método de la solicitud es POST, se lee el archivo CSV, se itera sobre las filas y se crea o se actualiza cada libro en la base de datos. Si el libro ya existe en la base de datos, se agrega su título a una lista de libros no importados. Finalmente, se devuelve un mensaje indicando si todos los libros se importaron correctamente o si algunos no se importaron porque ya existían en la base de datos. Si el método de solicitud no es POST, se devuelve la página de carga de libros.
+
+    Args:
+        El parámetro "request" es un objeto HttpRequest que contiene información sobre la solicitud HTTP actual.
+
+    Returns:
+        La función cargar_libros, la sección "Returns" no describe el valor de retorno de la función, por lo que debería ser completada con la información adecuada. Por lo general, el valor de retorno en una función en Django suele ser un objeto HttpResponse
+    """
+    #la solicitud es una solicitud POST.
     if request.method == 'POST':
         archivo = request.FILES['csv_file']
         datos_csv = archivo.read().decode('utf-8').splitlines()
@@ -306,14 +339,37 @@ def cargar_libros(request):
     return render(request, 'inventario/crear/rellenar_libros.html')
 
 def cargar_usuarios(request):
+    """Permite importar un archivo CSV con información de usuarios y agregarlos a la base de datos. La función cargar_usuarios permite importar un archivo CSV con información de usuarios y agregarlos a la base de datos. Si el archivo es cargado correctamente, los datos son procesados línea por línea para crear nuevos objetos de Usuario con los campos especificados. Si el usuario ya existe en la base de datos, la información no será importada y su cédula será registrada en una lista de usuarios no importados.
+
+    Finalmente, la función devuelve una respuesta HttpResponse que renderiza una plantilla HTML, que puede incluir un mensaje indicando cuántos usuarios se importaron correctamente y cuáles no. Si la petición HTTP no es una petición POST, se renderiza la plantilla HTML vacía para permitir la carga del archivo CSV.
+
+    Args:
+        request (HttpRequest): La petición HTTP recibida por la vista.
+
+    Returns:
+        HttpResponse: Una respuesta HTTP que renderiza la plantilla HTML de importación de usuarios.
+    """
     if request.method == 'POST':
+        
+        #Esta línea asigna a la variable archivo el archivo enviado mediante una solicitud POST en el campo 'csv_file'.
         archivo = request.FILES['csv_file']
+        
+        #Lee el contenido del archivo asignado a la variable archivo, decodifica los bytes a formato UTF-8 y divide el contenido en líneas, lo que devuelve una lista de cadenas.
         datos_csv = archivo.read().decode('utf-8').splitlines()
+        
+        #Crea un objeto csv.DictReader que toma una secuencia de líneas (en este caso, datos_csv) y devuelve un iterador que produce diccionarios por cada línea, usando la primera línea como encabezado.
         lector_csv = csv.DictReader(datos_csv)
+        
+        #Crea una lista vacía llamada 
         usuarios_no_importados = []
 
+
         for linea in lector_csv:
+            #se utiliza para obtener el valor de la columna "cedula" de la línea actual del archivo CSV.         
             cedula = linea["cedula"]
+            
+            #se utiliza para crear un nuevo objeto Usuario en la base de datos con los valores de nombre, apellido, cedula, direccion, telefono, correo_electronico y seccion correspondientes a la línea actual del archivo CSV. Si ya existe un objeto Usuario con el mismo valor de cedula en la base de datos, se devuelve ese objeto en lugar de crear uno nuevo.
+            #La variable creado se utiliza para indicar si se creó un nuevo objeto Usuario o si se recuperó uno existente de la base de datos.
             usuario, creado = Usuario.objects.get_or_create(
                     nombre=linea["nombre"],
                     apellido=linea["apellido"],
@@ -323,15 +379,21 @@ def cargar_usuarios(request):
                     correo_electronico=linea["correo_electronico"],
                     seccion=linea["seccion"],
                 )
+            
+            #Si no se creó un nuevo objeto Usuario en la línea actual del archivo CSV porque ya existía uno con el mismo valor de cedula, se agrega el valor de cedula a la lista usuarios_no_importados
             if not creado:
+                
+                #Al final del bucle, la lista usuarios_no_importados contiene las cedulas de los usuarios que no se pudieron importar porque ya existían en la base de datos.
                 usuarios_no_importados.append(cedula)
 
+        #Estas líneas de código se encargan de mostrar un mensaje de éxito o de error en la importación de los usuarios desde un archivo CSV. Si se encontraron usuarios que ya existen en la base de datos, se agregan sus cédulas a una lista llamada usuarios_no_importados. Luego, si esa lista no está vacía, se construye un mensaje de error que incluye las cédulas de los usuarios que no se importaron debido a que ya existen en la base de datos. Si la lista está vacía, significa que todos los usuarios se importaron correctamente, por lo que se construye un mensaje de éxito. Finalmente, se renderiza un template HTML que muestra el mensaje.
         if usuarios_no_importados:
             mensaje = f"Los siguientes usuarios no se importaron porque ya existen en la base de datos: {', '.join(usuarios_no_importados)}"
         else:
             mensaje = "Todos los usuarios se importaron correctamente."
         return render(request, 'inventario/crear/rellenar_usuarios.html', {'mensaje': mensaje})
-
+    
+    # Si la petición HTTP no es POST, renderizar la plantilla vacía
     return render(request, 'inventario/crear/rellenar_usuarios.html')
    
 #     model = Prestamo
@@ -457,12 +519,26 @@ class UsuarioSearchView(ListView):
 
 
 class ListarUsuarios(ListView):
+    """
+    Vista de lista que muestra una lista paginada de usuarios que coinciden con la palabra clave de búsqueda.
+
+    Args:
+        ListView (tipo): Clase base de vista genérica para mostrar una lista de objetos.
+
+    Returns:
+        tipo: Una lista paginada de objetos de Usuario ordenados por seccion, que coinciden con la palabra clave de búsqueda.
+    """
     template_name= 'inventario/listar/listar_usuarios.html'
     paginate_by=30
     ordering='seccion'    
     
     def get_queryset(self):
-        
+        """
+        Devuelve la lista paginada de usuarios que coinciden con la palabra clave de búsqueda.
+
+        Returns:
+            lista: Una lista paginada de objetos de Usuario que coinciden con la palabra clave de búsqueda.
+        """
         palabra_clave= self.request.GET.get("kword", '') #'
         lista= Usuario.objects.filter(
             nombre__icontains=palabra_clave
