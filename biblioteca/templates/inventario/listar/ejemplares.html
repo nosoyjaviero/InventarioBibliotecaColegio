@@ -31,7 +31,7 @@ Ejemplares
 
                         <a href="{% url 'app_inventario:editar_ejemplar' ejemplar.id %}"><img src="{{ ejemplar.libro.avatar.url }}" class="img-fluid"></a>
                         {% else %}
-                        <a href="{% url 'app_inventario:editar_ejemplar' ejemplar.id %}"><img src="{% static 'img/logo.png' %}" alt=""
+                        <a href="{% url 'app_inventario:editar_ejemplar' ejemplar.id %}"><img src="{% static 'img/Logo2.png' %}" alt=""
                             class="img-fluid"></a>
                         {% endif %}
 
@@ -64,11 +64,10 @@ Ejemplares
                     {% if forloop.counter|divisibleby:3 %}
                   </div>
                   <div class="row">
-                  
                     {% endif %}
-                  {% endfor %}
-          </div>
-
+                    {% endfor %}
+                  </div>
+                </div>
 
 
  

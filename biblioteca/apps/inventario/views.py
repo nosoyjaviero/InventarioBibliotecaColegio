@@ -11,7 +11,7 @@ from datetime import timedelta
 import csv
 from functools import partial
 
-from .forms import PrestamoForm
+from .forms import PrestamoForm, EjemplarForm
 
 from .models import Libro, Prestamo, Usuario, Ejemplar,Multa
 
@@ -212,10 +212,23 @@ class UsuarioCreateView(CreateView):
     
 class EjemplarCreateView(CreateView):
     model = Ejemplar
+    form_class = EjemplarForm
     template_name = "inventario/crear/crear_ejemplar.html"
-    fields=('__all__')
-
-    success_url= reverse_lazy('app_inventario:inicio')
+    success_url = reverse_lazy('app_inventario:inicio')
+    
+    def form_valid(self, form):
+        libro_id = form.cleaned_data['libro_id']
+        try:
+            libro = Libro.objects.get(id=libro_id)
+        except Libro.DoesNotExist:
+            form.add_error('libro_id', 'No existe usuario con este ID')
+            return super().form_invalid(form)
+        
+        ejemplar = form.save(commit=False)
+        ejemplar.libro = libro
+        ejemplar.save()
+        
+        return super().form_valid(form)
     
 class MultaCreateView(CreateView):
     model = Multa
@@ -224,21 +237,19 @@ class MultaCreateView(CreateView):
 
     success_url= reverse_lazy('app_inventario:inicio')
 
-
 class PrestamoCreateView(CreateView, FormMixin):
     template_name = "inventario/crear/crear_prestamo.html"
     form_class = PrestamoForm
     success_url = reverse_lazy('app_inventario:inicio')
 
     def form_valid(self, form):
-        # Obtener el ID del usuario y comprobar si existe
-        id_usuario = form.cleaned_data['id_usuario']
+        # Obtener la cédula del usuario y comprobar si existe
+        cedula_usuario = form.cleaned_data['cedula_usuario']
         usuario = None
         try:
-            usuario = Usuario.objects.get(id=id_usuario)
+            usuario = Usuario.objects.get(cedula=cedula_usuario)
         except Usuario.DoesNotExist:
-            print('No existe usuario con este ID')
-            form.add_error('id_usuario', 'No existe usuario con este ID')
+            form.add_error('cedula_usuario', 'No existe usuario con esta cédula')
 
         # Obtener el ID del ejemplar y comprobar si existe y está disponible
         id_ejemplar = form.cleaned_data['id_ejemplar']

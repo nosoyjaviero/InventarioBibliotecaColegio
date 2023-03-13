@@ -36,18 +36,18 @@ Crear Prestamo
     <h3>Crear Prestamo</h3>
     <div class="form-group grid-margin-x">
 
-      {% if form.id_usuario.errors %}
+      {% if form.cedula_usuario.errors %}
 
       <div class="alert alert-danger">
-      {{ form.id_usuario.errors }}
-      <label for="id_usuario">ID Usuario</label>
-      {{ form.id_usuario|add_class:"form-control text-center"}}
+      {{ form.cedula_usuario.errors }}
+      <label for="cedula_usuario">ID Usuario</label>
+      {{ form.cedula_usuario|add_class:"form-control text-center"}}
       </div>
 
       {% else %}
 
-      <label for="id_usuario">ID Usuario</label>
-      {{ form.id_usuario|add_class:"form-control text-center"}}
+      <label for="cedula_usuario">Cedula del usuario</label>
+      {{ form.cedula_usuario|add_class:"form-control text-center"}}
 
       {% endif %}
 
@@ -56,7 +56,7 @@ Crear Prestamo
 
         <div class="alert alert-danger">
           {{ form.id_ejemplar.errors }}
-          <label for="id_ejemplar">ID Usuario</label>
+          <label for="id_ejemplar">Ejemplar ID:</label>
           {{ form.id_ejemplar|add_class:"form-control text-center"}}
           </div>
           {% else %}
@@ -69,7 +69,7 @@ Crear Prestamo
       
       <label for="fecha_prestamo">Fecha prestamo</label>
       {{ form.fecha_prestamo |add_class:"dateinput form-control text-center" }}
-      <label for="form.fecha_devolucion">Fecha Devolucion</label>
+      <label for="form.fecha_devolucion">Fecha Devolucion (No obligatorio. Automaticamente a 15 dias.)</label>
       {{ form.fecha_devolucion |add_class:"dateinput form-control text-center" }}
 
     </div>

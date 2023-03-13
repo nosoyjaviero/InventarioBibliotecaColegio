@@ -1,7 +1,22 @@
 titulo,autor,isbn,editorial,fecha_publicacion,num_paginas,avatar
-El nombre del viento,Patrick Rothfuss,9788401352836,Penguin Random House Grupo Editorial,2007-03-27,864,/media/libros/el-nombre-del-viento.jpg
-El temor de un hombre sabio,Patrick Rothfuss,9788401352355,Penguin Random House Grupo Editorial,2011-08-02,1088,/media/libros/el-temor-de-un-hombre-sabio.jpg
-Harry Potter y la piedra filosofal,J.K. Rowling,9788478884957,Ediciones Salamandra,1997-06-26,256,/media/libros/harry-potter-y-la-piedra-filosofal.jpg
-Harry Potter y la cámara secreta,J.K. Rowling,9788478884452,Ediciones Salamandra,1998-07-02,288,/media/libros/harry-potter-y-la-camara-secreta.jpg
-Harry Potter y el prisionero de Azkaban,J.K. Rowling,9788478884452,Ediciones Salamandra,1999-06-24,352,/media/libros/harry-potter-y-el-prisionero-de-azkaban.jpg
-Cien años de soledad,Gabriel García Márquez,9780307474728,Editorial Sudamericana,1967-05-30,464,/media/libros/cien-anos-de-soledad.jpg
+Cien años de soledad,Gabriel García Márquez,9788497592208,Círculo de Lectores,1967-01-01,471,
+1984,George Orwell,9780451524935,Signet Classics,1949-01-01,328,
+El gran Gatsby,F. Scott Fitzgerald,9788435020737,Edhasa,1925-01-01,240,
+Matar a un ruiseñor,Harper Lee,9788466328024,Debolsillo,1960-01-01,376,
+To Kill a Mockingbird,Harper Lee,9780446310789,Warner Books,1960-01-01,324,
+El señor de los anillos,J.R.R. Tolkien,9788445000685,Minotauro,1954-01-01,1216,
+El Hobbit,J.R.R. Tolkien,9786070713768,Minotauro,1937-01-01,320,
+Harry Potter y la piedra filosofal,J.K. Rowling,9788478884957,Salamandra,1997-01-01,256, 
+Harry Potter y la cámara secreta,J.K. Rowling,9788478884957,Salamandra,1998-01-01,288,
+Harry Potter y el prisionero de Azkaban,J.K. Rowling,9788478884452,Salamandra,1999-01-01,360,
+Harry Potter y el cáliz de fuego,J.K. Rowling,9788478885190,Salamandra,2000-01-01,640,
+Harry Potter y la Orden del Fénix,J.K. Rowling,9788498383645,Salamandra,2003-01-01,896,
+Harry Potter y el misterio del príncipe,J.K. Rowling,9788498386363,Salamandra,2005-01-01,640,
+Harry Potter y las Reliquias de la Muerte,J.K. Rowling,9788498383645,Salamandra,2007-01-01,640,
+El código Da Vinci,Dan Brown,9780307474278,Anchor Books,2003-01-01,624,
+Ángeles y demonios,Dan Brown,9781416524793,Pocket Books,2000-01-01,620,
+El símbolo perdido,Dan Brown,9788408093379,Umbriel,2009-01-01,672,
+La sombra del viento,Carlos Ruiz Zafón,9788408065383,Planeta,2001-01-01,550,
+El juego del ángel,Carlos Ruiz Zafón,9788408088399,Planeta,2008-01-01,656,
+El prisionero del cielo,Carlos Ruiz Zafón,9788408101778,Planeta,2011-01-01,352,
+La casa de los espíritus,Isabel Allende,9788449906685,Emecé,1982-01-01,400, 

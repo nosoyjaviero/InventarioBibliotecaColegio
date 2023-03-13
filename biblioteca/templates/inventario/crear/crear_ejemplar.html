@@ -11,15 +11,7 @@
 Crear Nuevo Ejemplar
 {% endblock title %}
 
-
-
-
-
-
-
 {% block content %}
-
-
 
 <div class="card text-center mx-auto">  
   <div class="card-body mx-auto">
@@ -27,7 +19,19 @@ Crear Nuevo Ejemplar
       <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
           <h3>Crear Nuevo Ejemplar</h3>            
           <div class="form-group ">
-            <label for="">Libro</label>{{form.libro|add_class:"form-control text-center" |attr:"placeholder: Título del libro"}}
+
+            {% if form.libro_id.errors %}       
+
+            <div class="alert alert-danger">
+              {{ form.libro_id.errors }}
+              <label for="libro_id">ID del libro:</label>
+              <input type="text" name="libro_id" class="form-control text-center" id="libro_id" required>
+            </div>
+            {% else %}
+            <label for="libro_id">ID del libro:</label>
+            <input type="text" name="libro_id" class="form-control text-center" id="libro_id" required>
+            {% endif %}
+         
             <label for="">Estado</label>{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
             <label for="">Ubicacion</label>{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
             <label for="">Fecha Adquision</label>{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}

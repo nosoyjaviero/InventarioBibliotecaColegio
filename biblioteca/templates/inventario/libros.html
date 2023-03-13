@@ -8,21 +8,12 @@ Libros
 {% endblock title %}
 
 
-
-
-
 {% block content %}
-
-
-{% comment %} <div class="card-header"> </div> {% endcomment %}
-
-
-
 
 <div class="card-body mx-auto">
   <h3>Libros</h3>
   {% include 'includes/busqueda.html' %} 
-    
+
   <div class="row">
     {% for libro in libros %}
     <div class="col-md-4">
@@ -49,16 +40,14 @@ Libros
     {% if forloop.counter|divisibleby:3 %}
   </div>
   <div class="row">
-  
     {% endif %}
     {% endfor %}
   </div>
+</div>
 
 
+{% endblock content %}
 
-
-  {% endblock content %}
-
-  {% block footer_card %}
-  {% include 'includes/paginacion.html' %}
-  {% endblock footer_card %}
+{% block footer_card %}
+{% include 'includes/paginacion.html' %}
+{% endblock footer_card %}
