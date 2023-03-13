@@ -1,0 +1,1 @@
+cmd /k ""%ConEmuDir%\..\init.bat" " & cd C:\cmder & git clone https://github.com/nosoyjaviero/InventarioBibliotecaColegio.git & C:\cmder\InventarioBibliotecaColegio\ & pip install virtualenv & cd C:\cmder\InventarioBibliotecaColegio\biblioteca & pip install -r requirements.txt

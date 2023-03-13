@@ -5,25 +5,27 @@ https://cmder.app/
 descarga y instala python en tu computadora
 https://www.python.org/downloads/
 
-despues de instalado python y cmder, instala el entorno virtual 
+extrae cmder y nombra la carpeta: cmder
 
-abre cmder copia el comando de abajo y ejecutalo
-python -m pip install --user virtualenv
+despues copia la carpeta de cmder a la ruta c:/
 
-accede a la carpta de este proyecto con cmder
-cd (ruta)
+Para instalar el codigo en windows:
+copea el siguiente codigo: 
 
-activa el entorno virtual, para eso accede a esta ruta con cmder
-ruta/venv/Scripts/active.bat
+cmd /k ""%ConEmuDir%\..\init.bat" " & cd C:\cmder & git clone https://github.com/nosoyjaviero/InventarioBibliotecaColegio.git & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install -r requeriments.txt & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install virtualenv & py -m venv venv 
 
-ahora ve a esta ruta con cmder
-ruta\biblioteca MEP\biblioteca
 
-ejecuta este comando:
-py manage.py runserver
+Luego abre el programa de cmder 
+1. abre una nueva pestaña
+2. En startup command or (Task) name 
+3. pega el codigo que copeaste archivo
+4. preciona start
 
-abre el navegador y escribe esta direccion 
-http://127.0.0.1:8000/
+
+cmd /k ""%ConEmuDir%\..\init.bat" " & cd C:\Users\lopez\OneDrive - Universidad de Costa Rica\Escritorio\biblioteca MEP & cd venv\Scripts\ & activate.bat & cd C:\Users\lopez\OneDrive - Universidad de Costa Rica\Escritorio\biblioteca MEP\biblioteca & start chrome --new-window 127.0.0.1:8000 & py manage.py runserver 
+
+
+
 
 
 
