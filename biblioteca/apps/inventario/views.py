@@ -124,7 +124,8 @@ class Inicio(ListView):
         lista =Prestamo.objects.filter(
             fecha_devolucion=hoy,
             devuelto=False,
-            ejemplar__libro__titulo__icontains=palabra_clave)       
+            ejemplar__libro__titulo__icontains=palabra_clave
+            )       
         return lista
    
 class ListaDeLibros(ListView):
@@ -219,12 +220,15 @@ class EditarEjemplar(UpdateView):
     model = Ejemplar
     fields=('__all__')
     success_url = reverse_lazy('app_inventario:inicio')
+    
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        return self.model.objects.get(pk=pk)
 
 class LibroCreateView(CreateView):
     model = Libro
     template_name = "inventario/crear/crear_libro.html"
     fields=('__all__')
-
     success_url= reverse_lazy('app_inventario:inicio')
     
 class UsuarioCreateView(CreateView):
@@ -233,6 +237,9 @@ class UsuarioCreateView(CreateView):
     fields=('__all__')
 
     success_url= reverse_lazy('app_inventario:inicio')
+    def form_invalid(self, form):
+        print(True)
+        return super().form_invalid(form)
     
 class EjemplarCreateView(CreateView):
     model = Ejemplar
@@ -541,7 +548,7 @@ class ListarUsuarios(ListView):
         """
         palabra_clave= self.request.GET.get("kword", '') #'
         lista= Usuario.objects.filter(
-            nombre__icontains=palabra_clave
+            Q(nombre__icontains=palabra_clave) |Q(apellido__icontains=palabra_clave)
         )
         
         
