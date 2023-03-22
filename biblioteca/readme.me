@@ -10,9 +10,10 @@ extrae cmder y nombra la carpeta: cmder
 despues copia la carpeta de cmder a la ruta c:/
 
 Para instalar el codigo en windows:
+desactivar las opciones de alias con python en windows
 copea el siguiente codigo: 
 
-cmd /k ""%ConEmuDir%\..\init.bat" " & cd C:\cmder & git clone https://github.com/nosoyjaviero/InventarioBibliotecaColegio.git & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install -r requeriments.txt & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install virtualenv & py -m venv venv 
+cmd /k ""%ConEmuDir%\..\init.bat" " & cd C:\cmder & git clone https://github.com/nosoyjaviero/InventarioBibliotecaColegio.git &cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & py get-pip.py & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install -r requeriments.txt & cd C:\cmder\InventarioBibliotecaColegio\biblioteca\ & pip install virtualenv & py -m venv venv 
 
 
 Luego abre el programa de cmder 
