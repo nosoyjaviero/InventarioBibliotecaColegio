@@ -29,6 +29,8 @@
               <th width="200" class="text-center" scope="col">Telefono</th>
               <th width="200" class="text-center" scope="col">Correo Electronico</th>
               <th width="200" class="text-center" scope="col">Seccion</th>
+              <th width="200" class="text-center" scope="col">Profesor Guia</th>
+              <th width="200" class="text-center" scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +44,11 @@
               <td scope="row" class="text-center">{{e.telefono}}</td>  
               <td scope="row" class="text-center">{{e.correo_electronico}}</td>  
               <td scope="row" class="text-center">{{e.seccion}}</td>  
+              <td scope="row" class="text-center">{{e.profesor_guia}}</td> 
+              {% comment %} {% url 'app_inventario:editar_usuario' e.id %}  {% endcomment %}
+              <td scope="row" class="text-center"><a href="{% url 'app_inventario:editar_usuario' e.id %}" class="btn btn-warning" >Editar</a> <a href="{% url 'app_inventario:eliminar_usuario' e.id %}" class="btn btn-danger" >Eliminar</a></td>  
               {% comment %} <td><a class="button warning" href="{% url 'persona_app:empleado_detail' e.id %}">Ver</a> {% endcomment %}
+                {% comment %} eliminar_usuario {% endcomment %}
             </tr>
             {% endfor %}
           </tbody>

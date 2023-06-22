@@ -38,26 +38,77 @@ Ejemplares
                         <div class="card-body">
                           <h5 class="card-title">{{ejemplar.libro.titulo}}</h5>
                         </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">ID: {{ejemplar.id}}</li>
-                        </ul>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">Autor: {{ejemplar.libro.autor}}</li>
-                        </ul>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">Estado: {{ejemplar.estado}}</li>
-                        </ul>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">Cantidad disponible: {{ejemplar.cantidad}}</li>
-                        </ul>
-                        <ul class="list-group list-group-flush">
-                          
-                          {% if ejemplar.ubicacion %}
-                          <li class="list-group-item">Ubicacion: {{ejemplar.ubicacion}}</li>
-                          {% endif %}
-                            
-                          
-                        </ul>
+
+
+<ul class="list-group list-group-flush">
+
+  {% if ejemplar.id %}
+  <li class="list-group-item">ID: {{ ejemplar.id }}</li>
+  {% endif %}
+
+  {% if ejemplar.libro.autor %}
+    <li class="list-group-item">Autor: {{ ejemplar.libro.autor }}</li>
+    {% endif %} 
+
+
+    {% if ejemplar.estado %}
+    <li class="list-group-item">Estado: {{ ejemplar.estado }}</li>
+    {% endif %}
+
+    {% if ejemplar.fecha_adquisicion %}
+    <li class="list-group-item">Fecha de adquisición: {{ ejemplar.fecha_adquisicion }}</li>
+    {% endif %}
+
+    {% if ejemplar.isbn %}
+    <li class="list-group-item">ISBN: {{ ejemplar.isbn }}</li>
+    {% endif %}
+
+    {% if ejemplar.ultima_revision %}
+    <li class="list-group-item">Última revisión: {{ ejemplar.ultima_revision }}</li>
+    {% endif %}
+
+    {% if ejemplar.cantidad %}
+    <li class="list-group-item">Cantidad: {{ ejemplar.cantidad }}</li>
+    {% endif %}
+
+    {% if ejemplar.ano_aquision %}
+    <li class="list-group-item">Año de adquisición: {{ ejemplar.ano_aquision }}</li>
+    {% endif %}
+
+    {% if ejemplar.edicion %}
+    <li class="list-group-item">Edición: {{ ejemplar.edicion }}</li>
+    {% endif %}
+
+    {% if ejemplar.año_publicacion %}
+    <li class="list-group-item">Año de publicación: {{ ejemplar.año_publicacion }}</li>
+    {% endif %}
+
+    {% if ejemplar.editorial %}
+    <li class="list-group-item">Editorial: {{ ejemplar.editorial }}</li>
+    {% endif %}
+    
+    {% if ejemplar.dewey %}
+    <li class="list-group-item">Dewey: {{ ejemplar.dewey }}</li>
+    {% endif %}
+
+    {% if ejemplar.cutter %}
+    <li class="list-group-item">Cutter: {{ ejemplar.cutter }}</li>
+    {% endif %}
+
+
+    {% if ejemplar.asignatura %}
+    <li class="list-group-item">Asignatura: {{ ejemplar.asignatura }}</li>
+    {% endif %}
+
+    {% if ejemplar.comentarios %}
+    <li class="list-group-item">Comentarios: {{ ejemplar.comentarios }}</li>
+    {% endif %}
+
+    {% if ejemplar.ubicacion %}
+    <li class="list-group-item">Ubicación: {{ ejemplar.ubicacion }}</li>
+    {% endif %}
+</ul>
+
 
                       </div>
                     </div>

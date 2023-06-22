@@ -35,10 +35,12 @@
         
         
           
-        <li class="list-group-item">{{prestamo.usuario.nombre}} {{prestamo.usuario.apellido}}</li>
-        <li class="list-group-item">{{prestamo.usuario.cedula}}</li>
-        <li class="list-group-item">{{prestamo.usuario.seccion}}</li>
-        <li class="list-group-item">{{prestamo.usuario.telefono}}</li>
+        <li class="list-group-item">Nombre: {{prestamo.usuario.nombre}} {{prestamo.usuario.apellido}}</li>
+        <li class="list-group-item">Cedula: {{prestamo.usuario.cedula}}</li>
+        <li class="list-group-item">Seccion: {{prestamo.usuario.seccion}}</li>
+        <li class="list-group-item">Telefono: {{prestamo.usuario.telefono}}</li>
+        <li class="list-group-item">Profesor Guia: {{prestamo.usuario.profesor_guia}}</li>
+        <li class="list-group-item">Fecha de devolucion: {{prestamo.fecha_devolucion}}</li>
         <li class="list-group-item grid-margin-x">
           <a href="{% url 'app_inventario:actualizar_fecha' prestamo.id %}" class="btn btn-warning">Actualizar fecha</a>
           <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}"  class="btn btn-danger">Devolver</a>

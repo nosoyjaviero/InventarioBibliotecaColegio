@@ -30,20 +30,19 @@ class Libro(models.Model):
         Libro: Una instancia de la clase Libro.
     """
     titulo = models.CharField(max_length=100)
-    autor = models.CharField(max_length=100, blank=True ,null=True )
-    isbn = models.CharField(max_length=20, blank=True ,null=True )
-    editorial = models.CharField(max_length=100, blank=True ,null=True )
-    fecha_publicacion = models.DateField( blank=True ,null=True )
+    autor = models.CharField(max_length=100, blank=True ,null=True )    
     num_paginas = models.IntegerField( blank=True ,null=True )
-    avatar= models.ImageField('Imagen de Portada',upload_to='libros',null=True, blank=True )
+    sinopsis= models.TextField(blank=True, null=True)
+    avatar= models.ImageField('Imagen de Portada',upload_to='libros',null=True, blank=True )    
+    
     
     
     def __str__(self):
         return self.titulo    
 
 class Usuario(models.Model):
-    """La clase Usuario representa a un usuario en el sistema
-    
+    """La clase Usuario representa a un esudiante en el sistema
+        
     Models (objeto): El módulo models de Django.
 
     Returns:
@@ -61,10 +60,12 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=50)    
     apellido = models.CharField(max_length=50)
     cedula = models.CharField(max_length=20, null=True)
-    direccion = models.CharField(max_length=200, blank=True ,null=True )
+    direccion = models.CharField(max_length=200, blank=True ,null=True)
     telefono = models.CharField(max_length=20 , blank=True ,null=True )    
     correo_electronico = models.EmailField( blank=True ,null=True )   
     seccion = models.CharField(max_length=20, null=True)
+    profesor_guia=  models.CharField(max_length=150, null=True)
+    
     
     def __str__(self):
         """Returns:
@@ -72,6 +73,8 @@ class Usuario(models.Model):
         """
         return f"{self.nombre} {self.apellido} {self.seccion}"
 
+
+#Para el nuevo docstring es indicarle a al chat que genere un nuevo docstring apartir de las modicicaciones realizadas. 
 class Ejemplar(models.Model):
     """
     Modelo que representa un ejemplar de un libro.
@@ -109,9 +112,21 @@ class Ejemplar(models.Model):
     estado = models.CharField(max_length=20, choices=opciones_estado)
     ubicacion = models.CharField(max_length=100, blank=True ,null=True )
     fecha_adquisicion = models.DateField( blank=True ,null=True )
+    isbn = models.CharField(max_length=20, blank=True ,null=True )
     ultima_revision = models.DateField( blank=True ,null=True )
-    cantidad = models.IntegerField(default=1, blank=True ,null=True )
-    comentarios=models.CharField(max_length=300, blank=True ,null=True )
+    cantidad = models.IntegerField(default=1, blank=True ,null=True )    
+    ano_aquision=models.CharField('Año adquision',max_length=4, blank=True ,null=True )   
+    edicion = models.CharField(max_length=100, blank=True ,null=True)      
+    año_publicacion = models.CharField(max_length=100, blank=True ,null=True)      
+    editorial = models.CharField(max_length=100, blank=True ,null=True)      
+    cutter= models.CharField(max_length=20, blank=True ,null=True )
+    dewey= models.CharField(max_length=20, blank=True ,null=True ) 
+    asignatura= models.CharField(max_length=100, blank=True, null=True)
+    comentarios = models.TextField(blank=True, null=True) 
+
+    def save(self, *args, **kwargs):
+        self.asignatura = self.dewey + ' ' + self.cutter
+        super(Ejemplar, self).save(*args, **kwargs)
     
     def __str__(self):
         """Retorna el título del libro asociado con este ejemplar."""

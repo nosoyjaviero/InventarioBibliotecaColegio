@@ -553,3 +553,19 @@ class ListarUsuarios(ListView):
         
         
         return lista
+    
+    
+class EditarUsuario(UpdateView):
+    model = Usuario
+    template_name = 'inventario/editar/editar_usuario.html'
+    fields=('__all__')
+    
+    success_url= reverse_lazy('app_inventario:inicio')
+    
+
+
+class UsuarioDeleteView(DeleteView):
+    model = Usuario
+    template_name = 'inventario/eliminar/eliminar_usuario.html'
+    
+    success_url= reverse_lazy('app_inventario:inicio')

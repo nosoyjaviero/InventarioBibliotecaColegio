@@ -11,11 +11,11 @@ urlpatterns = [
     
     path('editar-libro/<pk>', views.EditarLibro.as_view(), name='editar_libro'), 
     
+    #ejemplares
     path('editar-ejemplar/<pk>', views.EditarEjemplar.as_view(), name='editar_ejemplar'),
-    
-    
     path('ejemplares', views.ListaDeEjemplares.as_view(), name='ejemplares'),
      
+   # usuario
    path('cargar_usuario', views.cargar_usuarios, name="cargar_usuarios"),
    path('cargar_libro', views.cargar_libros, name="cargar_libros"),
    
@@ -50,8 +50,15 @@ urlpatterns = [
    #listar
     path('prestamos/', views.libros_prestados.as_view(), name='prestamos'),
     path('prestamos-vencidos/', views.PrestamosVencidos.as_view(), name='prestamos-vencidos'),
+    
+    
+   #  usuarios
     path('listar-usuarios/', views.ListarUsuarios.as_view(), name='lista_usuarios'),
+    path('editar-usuario/<pk>', views.EditarUsuario.as_view(), name='editar_usuario'),
+    
+    path('eliminar/<pk>', views.UsuarioDeleteView.as_view(), name='eliminar_usuario'),
     
     
    #fin listar
+   
 ]

@@ -34,26 +34,47 @@
       {% comment %} <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
         card's content.</p> {% endcomment %}
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        ID: {{libro.id}}
-      </li>
-      <li class="list-group-item">
-        {{libro.autor}}
-      </li>
-      <li class="list-group-item">
-        <p>ISBN: {{libro.isbn}}</p>
-      </li>
-      <li class="list-group-item">
-        <p>Editorial: {{libro.editorial}} </p>
-      </li>
-      <li class="list-group-item">
-        <p>Fecha Publicacion: {{libro.fecha_publicacion}}</p>
-      </li>
-      <li class="list-group-item">
-        <p>Numero de Paginas: {{libro.num_paginas}}</p>
-      </li>
-    </ul>
+  
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            Informacion
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          
+          <ul class="list-group list-group-flush">
+
+            {% if libro.id %}
+            <li class="list-group-item">ID: {{ libro.id }}</li>
+            {% endif %}
+        
+            {% if libro.titulo %}
+            <li class="list-group-item">Titulo: {{ libro.titulo }}</li>
+            {% endif %}
+        
+            {% if libro.autor %}
+            <li class="list-group-item">Autor: {{ libro.autor }}</li>
+            {% endif %}
+        
+            {% if libro.num_paginas %}
+            <li class="list-group-item">Numero de Paginas: {{ libro.num_paginas }}</li>
+            {% endif %}
+        
+            {% if libro.sinopsis %}
+            <li class="list-group-item">Sinopsis: {{ libro.sinopsis }}</li>
+            {% endif %}   
+      
+          </ul>
+
+
+        </div>
+      </div>
+     
+    </div>
+
+   
     <li class="list-group-item">
       <a type="button" class="btn btn-info justify-content-center" href="{% url 'app_inventario:editar_libro' libro.id  %}">Editar</a>
     </li>

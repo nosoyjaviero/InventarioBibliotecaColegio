@@ -46,4 +46,3 @@ class UsuarioAdmin(admin.ModelAdmin):
     
     
 admin.site.register(Usuario, UsuarioAdmin)
-
