@@ -569,3 +569,15 @@ class UsuarioDeleteView(DeleteView):
     template_name = 'inventario/eliminar/eliminar_usuario.html'
     
     success_url= reverse_lazy('app_inventario:inicio')
+    
+class EjemplaresDeleteView(DeleteView):
+    model = Ejemplar
+    template_name = 'inventario/eliminar/eliminar_ejemplar.html'
+    
+    success_url= reverse_lazy('app_inventario:inicio')
+    
+class LibroDeleteView(DeleteView):
+    model = Libro
+    template_name = 'inventario/eliminar/eliminar_libro.html'
+    
+    success_url= reverse_lazy('app_inventario:inicio')

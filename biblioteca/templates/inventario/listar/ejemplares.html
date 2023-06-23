@@ -108,6 +108,11 @@ Ejemplares
     <li class="list-group-item">Ubicación: {{ ejemplar.ubicacion }}</li>
     {% endif %}
 </ul>
+<li class="list-group-item">
+
+  <a type="button" class="btn btn-warning justify-content-center" href="{% url 'app_inventario:editar_ejemplar' ejemplar.id  %}">Editar</a>
+  <a type="button" class="btn btn-danger justify-content-center" href="{% url 'app_inventario:eliminar_ejemplar' ejemplar.id  %}">Eliminar</a>
+</li>
 
 
                       </div>

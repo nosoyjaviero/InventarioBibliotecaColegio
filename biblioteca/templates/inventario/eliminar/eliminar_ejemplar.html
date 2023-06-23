@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load widget_tweaks %}
+{% block jquerycode %}
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock jquerycode %}
+
+
+
+{% block content %}
+  <h1>Eliminar {{ object }}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button class="btn btn-danger" type="submit">Confirmar eliminación</button>
+  </form>
+{% endblock %}

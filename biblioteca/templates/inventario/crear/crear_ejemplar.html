@@ -32,11 +32,44 @@ Crear Nuevo Ejemplar
             <input type="text" name="libro_id" class="form-control text-center" id="libro_id" required>
             {% endif %}
          
-            <label for="">Estado</label>{{form.estado |add_class:"form-control text-center" |attr:"placeholder: Estado"}}
-            <label for="">Ubicacion</label>{{form.ubicacion|add_class:"form-control text-center"|attr:"placeholder: Ubicacion"}}
-            <label for="">Fecha Adquision</label>{{form.fecha_adquisicion |add_class:"dateinput  form-control text-center" |attr:"placeholder: Fecha Adquision"}}
-            <label for="">Ultima Revisiom</label>{{form.ultima_revision  |add_class:"dateinput form-control text-center"|attr:"placeholder: Ultima Revisión" }}
-            <label for="">Cantidad</label>{{form.cantidad |add_class:"form-control text-center"|attr:"placeholder: Cantidad"}}       
+            <label for="">Estado</label>
+            {{ form.estado | add_class:"form-control text-center" | attr:"placeholder: Estado" }}
+            
+            
+            <label for="">Ultima Revisiom</label>
+            {{ form.ultima_revision | add_class:"dateinput form-control text-center" | attr:"placeholder: Ultima Revisión" }}
+            
+            <label for="">Año Adquision</label>
+            {{ form.ano_aquision | add_class:"form-control text-center" | attr:"placeholder: Año de adquisición" }}
+            
+            <label for="">Edicion</label>
+            {{ form.edicion | add_class:"form-control text-center" | attr:"placeholder: Edición" }}
+            
+            <label for="">ISBN</label>
+            {{ form.isbn | add_class:"form-control text-center" | attr:"placeholder: ISBN" }}
+            
+            <label for="">Año Publicacionl</label>
+            {{ form.año_publicacion | add_class:"form-control text-center" | attr:"placeholder: Año de publicación" }}
+            
+            <label for="">Editorial</label>
+            {{ form.editorial | add_class:"form-control text-center" | attr:"placeholder: Editorial" }}
+            
+            <label for="">Dewey</label>
+            {{ form.dewey | add_class:"form-control text-center" | attr:"placeholder: Dewey" }}
+            
+            <label for="">Cutter</label>
+            {{ form.cutter | add_class:"form-control text-center" | attr:"placeholder: Cutter" }}
+
+            <label for="">Asignatura</label>
+            {{ form.asignatura | add_class:"form-control text-center" | attr:"placeholder: Asignatura" }}
+
+            <label for="">Cantidad</label>
+            {{ form.cantidad | add_class:"form-control text-center" | attr:"placeholder: Cantidad" }}
+
+            
+            <label for="">Ubicacion</label>
+            {{ form.ubicacion | add_class:"form-control text-center" | attr:"placeholder: Ubicacion" }}
+            
             <label for="">Comentario</label>{{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
 
       

@@ -35,11 +35,12 @@ urlpatterns = [
        
 
     #    Crear
-       path('registrar-Libro/', views.LibroCreateView.as_view(), name='registrar_libro'),
+       path('crear-libro/', views.LibroCreateView.as_view(), name='registrar_libro'),
        
-       path('registrar-Usuario/', views.UsuarioCreateView.as_view(), name='registrar_usuario'),
        
-       path('registrar-Ejemplar/', views.EjemplarCreateView.as_view(), name='registrar_ejemplar'),
+       path('crear-Usuario/', views.UsuarioCreateView.as_view(), name='registrar_usuario'),
+       
+       path('crear-Ejemplar/', views.EjemplarCreateView.as_view(), name='registrar_ejemplar'),
        
        path('registrar-Multa/', views.MultaCreateView.as_view(), name='registrar_multa'),
        
@@ -56,7 +57,9 @@ urlpatterns = [
     path('listar-usuarios/', views.ListarUsuarios.as_view(), name='lista_usuarios'),
     path('editar-usuario/<pk>', views.EditarUsuario.as_view(), name='editar_usuario'),
     
-    path('eliminar/<pk>', views.UsuarioDeleteView.as_view(), name='eliminar_usuario'),
+    path('elimina-usuarior/<pk>', views.UsuarioDeleteView.as_view(), name='eliminar_usuario'),
+    path('eliminar-libro/<pk>', views.LibroDeleteView.as_view(), name='eliminar_libro'),
+    path('eliminar-ejemplar/<pk>', views.EjemplaresDeleteView.as_view(), name='eliminar_ejemplar'),
     
     
    #fin listar

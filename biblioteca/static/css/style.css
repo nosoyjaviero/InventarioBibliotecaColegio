@@ -13,9 +13,18 @@
     
     background-repeat: no-repeat;
     background-size: cover;
+    
   }
 
   .card-img-top {
     max-width: 100%;
     height: auto;
+  }
+
+  .imagen-estandar {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 370px;
+    max-width: 250px;
   }

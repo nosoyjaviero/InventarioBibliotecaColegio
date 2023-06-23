@@ -21,7 +21,7 @@
       {% if prestamo.ejemplar.libro.avatar %}
       <!-- <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}">  </a> -->
      
-    <img src="{{ prestamo.ejemplar.libro.avatar.url }}" class="img-fluid .hover-image">
+    <img src="{{ prestamo.ejemplar.libro.avatar.url }}" class="img-fluid .hover-image imagen-estandar">
      
       {% else %}
     <!--   <a href="{% url 'app_inventario:devolver_ejemplar' prestamo.id %}">   </a> -->
@@ -62,49 +62,6 @@
 
 
 
-
-{% comment %} 
-{% block footer_card %}
-sadaasdas
-<div class="paginacion"> <!--Pagination-->
-        {% if is_paginated %}
-                <nav aria-label="Pagination">
-                        <ul class="pagination">
-                                  {% if page_obj.has_previous %}
-                                        <li class="pagination-previous disabled">
-                                          <a href="?page={{page_obj.previous_page_number}}" aria-label="Page 2">Atras</a>
-                                        </li>
-                                  {% endif %}
-                                  {% for pagina in paginator.page_range %}
-                                        
-                                        {% if pagina %}
-                                                {% if  pagina == page_obj.number %}
-                                                    <li class="current"><span class="show-for-sr">You're on page</span>{{pagina}}</li>                 
-                                                {% else %}
-                                                    <li><a href="?page={{pagina}}" aria-label="Page 2">{{pagina}}</a></li>
-                                                {% endif %}
-                                        {% else %}
-                                          
-                                        {% endif %}                       
-                               
-
-                                  {% endfor %}
-                                  {% if page_obj.has_next %}
-                                        <li class="pagination-next">
-                                          <a href="?page={{page_obj.next_page_number}}">Siguiente</a>
-                                        </li>
-                                  {% endif %}
-                        </ul>
-                </nav>
-        {% endif %}
-
-</div> <!--End Pagination-->
-
-{% endblock footer_card %} {% endcomment %}
-
-
-
-    
 
 
  

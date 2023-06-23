@@ -1,14 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
-
 {% block title %}
 Libros
 {% endblock title %}
 
-
 {% block content %}
+
+<style>
+.card-container {
+  width: 18rem;
+  height: 100%;
+}
+
+.card-body {
+  height: 100%;
+}
+
+.imagen-estandar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 370px;
+  max-width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 
 <div class="card-body mx-auto">
   <h3>Libros</h3>
@@ -17,20 +36,20 @@ Libros
   <div class="row">
     {% for libro in libros %}
     <div class="col-md-4">
-      <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem;">
-
-        {% if libro.avatar %}
-
-        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{{ libro.avatar.url }}" class="img-fluid"></a>
-        {% else %}
-        <a href="{% url 'app_inventario:libro' libro.id %}"><img src="{% static 'img/Logo2.png' %}" alt=""
-            class="img-fluid"></a>
-        {% endif %}
+      <div class="card shadow p-3 mb-5 bg-body rounded card-container">
+        <a href="{% url 'app_inventario:libro' libro.id %}">
+          <div class="image-container">
+            {% if libro.avatar %}
+            <img src="{{ libro.avatar.url }}" class="img-fluid imagen-estandar">
+            {% else %}
+            <img src="{% static 'img/Logo2.png' %}" alt="" class="img-fluid imagen-estandar">
+            {% endif %}
+          </div>
+        </a>
 
         <div class="card-body">
           <h5 class="card-title">{{libro.titulo}}</h5>
         </div>
-
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item">
@@ -41,41 +60,22 @@ Libros
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
               <ul class="list-group list-group-flush">
-
-
-
-
                 {% if libro.autor %}
                 <li class="list-group-item">Autor: {{ libro.autor }}</li>
                 {% endif %}
-            
                 {% if libro.id %}
                 <li class="list-group-item">ID: {{ libro.id }}</li>
                 {% endif %}
-      
                 {% if libro.num_paginas %}
                 <li class="list-group-item">Numero de Paginas: {{ libro.num_paginas }}</li>
                 {% endif %}
-            
                 {% if libro.sinopsis %}
                 <li class="list-group-item">Sinopsis: {{ libro.sinopsis }}</li>
                 {% endif %}
-      
-      
-                {% comment %} <li class="list-group-item">{{libro.autor}}</li>
-                <li class="list-group-item">ID: {{libro.id}}</li>          
-                <li class="list-group-item">Numero de Paginas: {{libro.num_paginas}}</li>
-                <li class="list-group-item">Sinopsis: {{libro.sinopsis}}</li> {% endcomment %}
               </ul>
-
-              
             </div>
           </div>
         </div>
-
-        
-     
-
       </div>
     </div>
     {% if forloop.counter|divisibleby:3 %}
@@ -83,13 +83,11 @@ Libros
   <div class="row">
     {% endif %}
     {% endfor %}
-
     {% if forloop.last and not forloop.counter|divisibleby:3 %}
     </div>
     {% endif %}
   </div>
 </div>
-
 
 {% endblock content %}
 
