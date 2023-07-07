@@ -57,7 +57,8 @@ class EjemplarForm(forms.ModelForm):
     
     class Meta:
         model = Ejemplar
-        fields = ('estado', 'ubicacion', 'fecha_adquisicion', 'ultima_revision', 'cantidad', 'comentarios')
+        # fields = ('estado', 'ubicacion',  'ultima_revision', 'cantidad', 'comentarios')
+        fields = ('estado', 'isbn',  'ultima_revision', 'cantidad', 'ano_aquision', 'año_publicacion', 'editorial', 'cutter', 'dewey' ,  'edicion')
         
     def clean_libro_id(self):
         libro_id = self.cleaned_data['libro_id']

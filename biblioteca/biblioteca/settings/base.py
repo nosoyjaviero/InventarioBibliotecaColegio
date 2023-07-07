@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',    
     'widget_tweaks',    
+    # 'django_extensions',    
     'django_bootstrap5',
     'bootstrap4',    
     'apps.inventario.templatetags.custom_filters',
@@ -38,6 +39,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# GRAPH_MODELS = {
+#   'all_applications': True,
+#   'group_models': True,
+# }
 
 ROOT_URLCONF = 'biblioteca.urls'
 

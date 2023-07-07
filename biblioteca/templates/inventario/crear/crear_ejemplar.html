@@ -16,7 +16,14 @@ Crear Nuevo Ejemplar
 <div class="card text-center mx-auto">  
   <div class="card-body mx-auto">
 
-      <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
+    <form method="post">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+      {% comment %} <form method="POST"  enctype="multipart/form-data" >{% csrf_token %}
           <h3>Crear Nuevo Ejemplar</h3>            
           <div class="form-group ">
 
@@ -67,15 +74,11 @@ Crear Nuevo Ejemplar
             {{ form.cantidad | add_class:"form-control text-center" | attr:"placeholder: Cantidad" }}
 
             
-            <label for="">Ubicacion</label>
-            {{ form.ubicacion | add_class:"form-control text-center" | attr:"placeholder: Ubicacion" }}
-            
-            <label for="">Comentario</label>{{ form.comentarios|add_class:"form-control text-center"|attr:"placeholder: Comentarios" }}
-
-      
           </div>
           <button type="submit" class="btn btn-success">Crear</button>
-      </form>       
+      </form>        {% endcomment %}
+
+      
   </div>
 </div>  
 

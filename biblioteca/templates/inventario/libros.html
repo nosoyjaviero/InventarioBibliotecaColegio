@@ -9,13 +9,13 @@ Libros
 
 <style>
 .card-container {
-  width: 18rem;
-  height: 100%;
+  {% comment %} width: 250px; /* Cambia el valor de width según tu preferencia */
+  height: 90%; {% endcomment %}
 }
 
-.card-body {
+{% comment %} .card-body {
   height: 100%;
-}
+} {% endcomment %}
 
 .imagen-estandar {
   width: 100%;
@@ -47,35 +47,16 @@ Libros
           </div>
         </a>
 
-        <div class="card-body">
-          <h5 class="card-title">{{libro.titulo}}</h5>
-        </div>
-
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-headingOne">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                Accordion Item #1
-              </button>
-            </h2>
-            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-              <ul class="list-group list-group-flush">
-                {% if libro.autor %}
-                <li class="list-group-item">Autor: {{ libro.autor }}</li>
-                {% endif %}
-                {% if libro.id %}
-                <li class="list-group-item">ID: {{ libro.id }}</li>
-                {% endif %}
-                {% if libro.num_paginas %}
-                <li class="list-group-item">Numero de Paginas: {{ libro.num_paginas }}</li>
-                {% endif %}
-                {% if libro.sinopsis %}
-                <li class="list-group-item">Sinopsis: {{ libro.sinopsis }}</li>
-                {% endif %}
-              </ul>
+            <div class="card-body">
+              <h5 class="card-title">{{libro.titulo}}</h5>
             </div>
-          </div>
-        </div>
+
+            <ul class="list-group list-group-flush">
+                {% if libro.id %}
+                    <li class="list-group-item">ID: {{ libro.id }}</li>
+                {% endif %}
+            </ul>
+       
       </div>
     </div>
     {% if forloop.counter|divisibleby:3 %}

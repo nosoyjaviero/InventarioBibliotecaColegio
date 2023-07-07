@@ -110,8 +110,6 @@ class Ejemplar(models.Model):
         ('extraviado', 'Extraviado'),
     ]
     estado = models.CharField(max_length=20, choices=opciones_estado)
-    ubicacion = models.CharField(max_length=100, blank=True ,null=True )
-    fecha_adquisicion = models.DateField( blank=True ,null=True )
     isbn = models.CharField(max_length=20, blank=True ,null=True )
     ultima_revision = models.DateField( blank=True ,null=True )
     cantidad = models.IntegerField(default=1, blank=True ,null=True )    
@@ -122,10 +120,10 @@ class Ejemplar(models.Model):
     cutter= models.CharField(max_length=20, blank=True ,null=True )
     dewey= models.CharField(max_length=20, blank=True ,null=True ) 
     asignatura= models.CharField(max_length=100, blank=True, null=True)
-    comentarios = models.TextField(blank=True, null=True) 
 
     def save(self, *args, **kwargs):
-        self.asignatura = self.dewey + ' ' + self.cutter
+        if self.dewey and self.cutter:
+            self.asignatura = self.dewey + ' ' + self.cutter
         super(Ejemplar, self).save(*args, **kwargs)
     
     def __str__(self):

@@ -24,7 +24,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    re_path('', include("apps.inventario.urls")),
+    re_path('', include('apps.inventario.urls', namespace='app_inventario')),
+    
+    #   re_path('', include("apps.inventario.urls")),
+    
+    
     # re_path('', include("applications.personas.urls")),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

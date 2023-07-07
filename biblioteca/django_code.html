@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Django Code</title>
+</head>
+<body>
+{% for file in site.all_files %}
+<h2>{{ file.name }}</h2>
+<pre>{{ file.content|safe }}</pre>
+{% endfor %}
+</body>
+</html>

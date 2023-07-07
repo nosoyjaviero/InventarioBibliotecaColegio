@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, redirect
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy,reverse
 from django.contrib import messages
 
@@ -26,7 +28,7 @@ from django.views.generic import (
     DeleteView
     )
 # Create your views here.
-
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 def select_usuarios(request):
     """La función select_usuarios renderiza la plantilla 'inventario/crear/prueba2.html' y pasa como contexto un diccionario con los objetos Usuario obtenidos desde la base de datos.Estas líneas de código corresponden a la función select_usuarios, que recibe una solicitud request como argumento y devuelve una respuesta HTTP que renderiza una plantilla HTML.
 
@@ -45,6 +47,7 @@ def select_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'inventario/crear/prueba2.html', {'modelo_usuario': Usuario, 'usuarios': usuarios})
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 def usuarios_por_seccion(request, seccion):
     """Devuelve una respuesta HTTP en formato JSON que contiene los usuarios que pertenecen a una sección específica.
     
@@ -93,6 +96,7 @@ def SeleccionarUsuario(request, seccion_id=None):
     return render(request, 'inventario/crear/crear_ejemplar2.html', {'usuarios': usuarios, 'url_prestamo': url_prestamo})
 
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class libros_prestados(ListView):
     template_name= 'inventario/listar/libros_prestados.html'
     # prestamos = Prestamo.objects.filter(devuelto=False)
@@ -109,8 +113,12 @@ class libros_prestados(ListView):
         return lista
     
     # def get_queryset(self):
-    #     return Prestamo.objects.filter(devuelto=False)               
-
+    #     return Prestamo.objects.filter(devuelto=False) 
+    
+    
+    
+                  
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class Inicio(ListView):
     template_name= 'inicio.html'
     model=Libro
@@ -128,6 +136,7 @@ class Inicio(ListView):
             )       
         return lista
    
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class ListaDeLibros(ListView):
     template_name= 'inventario/libros.html'
     # model=Libro
@@ -140,6 +149,7 @@ class ListaDeLibros(ListView):
             titulo__icontains=palabra_clave)       
         return lista
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class ListaDeEjemplares(ListView):
     template_name= 'inventario/listar/ejemplares.html'
     # model=Ejemplar
@@ -152,11 +162,13 @@ class ListaDeEjemplares(ListView):
             libro__titulo__icontains=palabra_clave)       
         return lista
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class DetalleLibro(DetailView):
     template_name= 'inventario/libro.html'
     model=Libro
     context_object_name= 'libro'
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class PrestamosVencidos(ListView):
     model = Prestamo
     template_name = 'inventario/prestamos_vencidos.html'
@@ -171,6 +183,7 @@ class PrestamosVencidos(ListView):
             ejemplar__libro__titulo__icontains=palabra_clave)       
         return lista
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class DevolverPrestamo(UpdateView):
     template_name = 'inventario/devolucion.html'
     model = Prestamo
@@ -202,6 +215,7 @@ class DevolverPrestamo(UpdateView):
         
         return super().form_valid(form)
       
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class ActualizarFechaPrestamo(UpdateView):
     template_name = 'inventario/editar/actualizar_fecha.html'
     model = Prestamo
@@ -209,12 +223,14 @@ class ActualizarFechaPrestamo(UpdateView):
     # fields=('__all__')  
     success_url = reverse_lazy('app_inventario:inicio')
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class EditarLibro(UpdateView):
     template_name = "inventario/editar/editar_libro.html"
     model = Libro
     fields=('__all__')
     success_url = reverse_lazy('app_inventario:inicio')
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class EditarEjemplar(UpdateView):
     template_name = "inventario/editar/editar_ejemplar.html"
     model = Ejemplar
@@ -225,12 +241,14 @@ class EditarEjemplar(UpdateView):
         pk = self.kwargs.get('pk')
         return self.model.objects.get(pk=pk)
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class LibroCreateView(CreateView):
     model = Libro
     template_name = "inventario/crear/crear_libro.html"
     fields=('__all__')
     success_url= reverse_lazy('app_inventario:inicio')
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class UsuarioCreateView(CreateView):
     model = Usuario
     template_name = "inventario/crear/crear_usuario.html"
@@ -241,16 +259,17 @@ class UsuarioCreateView(CreateView):
         print(True)
         return super().form_invalid(form)
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class EjemplarCreateView(CreateView):
     model = Ejemplar
     form_class = EjemplarForm
     template_name = "inventario/crear/crear_ejemplar.html"
     success_url = reverse_lazy('app_inventario:inicio')
-    
     def form_valid(self, form):
         libro_id = form.cleaned_data['libro_id']
         try:
             libro = Libro.objects.get(id=libro_id)
+            
         except Libro.DoesNotExist:
             form.add_error('libro_id', 'No existe usuario con este ID')
             return super().form_invalid(form)
@@ -258,7 +277,6 @@ class EjemplarCreateView(CreateView):
         ejemplar = form.save(commit=False)
         ejemplar.libro = libro
         ejemplar.save()
-        
         return super().form_valid(form)
     
 class MultaCreateView(CreateView):
@@ -268,6 +286,7 @@ class MultaCreateView(CreateView):
 
     success_url= reverse_lazy('app_inventario:inicio')
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class PrestamoCreateView(CreateView, FormMixin):
     template_name = "inventario/crear/crear_prestamo.html"
     form_class = PrestamoForm
@@ -307,6 +326,7 @@ class PrestamoCreateView(CreateView, FormMixin):
         else:
             return self.form_invalid(form)
  
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 def cargar_libros(request):
     """La función cargar_libros permite importar una lista de libros desde un archivo CSV en la base de datos. Si el método de la solicitud es POST, se lee el archivo CSV, se itera sobre las filas y se crea o se actualiza cada libro en la base de datos. Si el libro ya existe en la base de datos, se agrega su título a una lista de libros no importados. Finalmente, se devuelve un mensaje indicando si todos los libros se importaron correctamente o si algunos no se importaron porque ya existían en la base de datos. Si el método de solicitud no es POST, se devuelve la página de carga de libros.
 
@@ -345,6 +365,7 @@ def cargar_libros(request):
 
     return render(request, 'inventario/crear/rellenar_libros.html')
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 def cargar_usuarios(request):
     """Permite importar un archivo CSV con información de usuarios y agregarlos a la base de datos. La función cargar_usuarios permite importar un archivo CSV con información de usuarios y agregarlos a la base de datos. Si el archivo es cargado correctamente, los datos son procesados línea por línea para crear nuevos objetos de Usuario con los campos especificados. Si el usuario ya existe en la base de datos, la información no será importada y su cédula será registrada en una lista de usuarios no importados.
 
@@ -403,116 +424,9 @@ def cargar_usuarios(request):
     # Si la petición HTTP no es POST, renderizar la plantilla vacía
     return render(request, 'inventario/crear/rellenar_usuarios.html')
    
-#     model = Prestamo
-#     template_name = 'inventario/prestamos_vencidos.html'
-
-#     def get_queryset(self):
-#         hoy = timezone.now().date()
-#         dias_atras = hoy - timedelta(days=15)
-#         dias_atras_exactos = hoy - timedelta(days=15)
-#         queryset = Prestamo.objects.filter(fecha_prestamo=dias_atras_exactos, devuelto=False, fecha_devolucion=hoy)
-#         return queryset
-   
-    # Anterior
-# class ActualizarPrestamo(UpdateView):
-#     template_name = "inventario/devolucion.html"
-#     model = Prestamo
-#     fields=('__all__')
-    
-#     success_url= reverse_lazy('app_inventario:inicio')
-    
-    
-#     def post(self, request, *args, **kwargs):
-        
-#         self.object= self.get_object()
-#         print(request.POST)
-#         print(request.POST['devuelto'])
-#         return super().post(request, *args, **kwargs)
-    
-    # def form_valid(self, form):   
-        
-    #      prestamo=form.save(commit=False) 
-    #      prestamo.save()   
-         
-    #      return super(EditarPrestamo ,self ).form_valid(form)    
-           
-      
-#     def post(self, request, *args, **kwargs):
-#         form = self.get_form()
-#         if form.is_valid():
-#             prestamo = form.save(commit=False)
-#             if prestamo.devuelto:
-#                 # restar uno a la cantidad de Ejemplar
-#                 ejemplar = prestamo.ejemplar
-#                 ejemplar.cantidad += 1
-#                 ejemplar.save()
-
-#                 # eliminar el registro de Prestamo
-#                 prestamo.delete()
-                
-#                 return HttpResponseRedirect(self.success_url)
-        
-#         return self.form_invalid(form)
-    
-# def devolver_libro(request, pk):
-#     prestamo = Prestamo.objects.get(id=pk)
-
-#     if request.method == 'POST':
-#         if prestamo.devuelto:
-#             # Subtract 1 from quantity and delete the loan record
-#             ejemplar = prestamo.ejemplar
-#             ejemplar.cantidad -= 1
-#             ejemplar.save()
-#             prestamo.delete()
-#             return redirect('app_inventario:inicio')
-
-#         else:
-#             # Set devuelto to True if the user confirms the return
-#             prestamo.devuelto = True
-#             prestamo.save()
-#             return redirect('prestamo_detail', prestamo_id=prestamo.id)
-
-#     context = {'prestamo': prestamo}
-#     return render(request, 'inventario/devolucion.html', context)
 
 
-
-
-
-
-# Este código define una vista en Django llamada devolver_libro que maneja la devolución de un libro prestado por un usuario. La vista toma como parámetro pk, que es la clave principal del registro del préstamo que se va a devolver.
-
-# La primera línea prestamo = Prestamo.objects.get(pk=pk) recupera el objeto del modelo Prestamo correspondiente al ID pk pasado como parámetro.
-# La siguiente línea ejemplar = prestamo.ejemplar obtiene el objeto Ejemplar asociado al préstamo.
-# Los próximos dos print se utilizan para imprimir el ID del préstamo y la cantidad actual de ejemplares disponibles.
-# El siguiente bloque if comprueba si la solicitud es de tipo POST y si el usuario ha seleccionado la opción "devuelto" en el formulario. Si se cumple esta condición, se ejecuta el siguiente bloque de código:
-# La línea ejemplar.cantidad += 1 suma uno a la cantidad de ejemplares disponibles.
-# La línea ejemplar.save() guarda el nuevo valor en la base de datos.
-# La línea prestamo.delete() elimina el registro de préstamo de la base de datos.
-# La vista redirige al usuario a la página de inicio.
-# Si la solicitud no es de tipo POST o el usuario no ha seleccionado la opción "devuelto", se renderiza la plantilla "inicio.html" con el objeto prestamo pasado como contexto.
-
-# def devolver_libro(request, pk):
-#     prestamo = Prestamo.objects.get(pk=pk)
-#     print(prestamo.id)
-#     ejemplar = prestamo.ejemplar
-    
-#     form_class = DevolucionLibroForm
-    
-#     print(ejemplar.cantidad)
-#     print(f'request.POST.get("devuelto") {request.POST.get("devuelto")}')
-#     if request.method == "POST" and request.POST.get("devuelto") == 'True':
-#         # Restar uno a la cantidad de ejemplares disponibles
-#         ejemplar.cantidad += 1
-#         ejemplar.save()
-#         print(ejemplar.cantidad)
-#         # Borrar el registro de préstamo
-#         prestamo.delete()
-
-#         return redirect("app_inventario:inicio")
-
-#     return render(request, "inventario/devolucion.html", {"prestamo": prestamo})
-
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class UsuarioSearchView(ListView):
     model = Usuario
     template_name = 'inventario/crear/buscar_usuario.html'
@@ -525,6 +439,7 @@ class UsuarioSearchView(ListView):
         return Usuario.objects.none()
 
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class ListarUsuarios(ListView):
     """
     Vista de lista que muestra una lista paginada de usuarios que coinciden con la palabra clave de búsqueda.
@@ -555,6 +470,7 @@ class ListarUsuarios(ListView):
         return lista
     
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class EditarUsuario(UpdateView):
     model = Usuario
     template_name = 'inventario/editar/editar_usuario.html'
@@ -564,20 +480,42 @@ class EditarUsuario(UpdateView):
     
 
 
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class UsuarioDeleteView(DeleteView):
     model = Usuario
     template_name = 'inventario/eliminar/eliminar_usuario.html'
     
     success_url= reverse_lazy('app_inventario:inicio')
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class EjemplaresDeleteView(DeleteView):
     model = Ejemplar
     template_name = 'inventario/eliminar/eliminar_ejemplar.html'
     
     success_url= reverse_lazy('app_inventario:inicio')
     
+@method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class LibroDeleteView(DeleteView):
     model = Libro
     template_name = 'inventario/eliminar/eliminar_libro.html'
     
     success_url= reverse_lazy('app_inventario:inicio')
+    
+    
+@login_required(login_url='login')
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('app_inventario:inicio')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('app_inventario:inicio')
