@@ -15,7 +15,7 @@ from functools import partial
 
 from .forms import PrestamoForm, EjemplarForm
 
-from .models import Libro, Prestamo, Usuario, Ejemplar,Multa
+from .models import Libro, Prestamo, Usuario, Ejemplar
 
 from django.views.generic.edit import FormMixin
 from django.views.generic import (
@@ -278,13 +278,7 @@ class EjemplarCreateView(CreateView):
         ejemplar.libro = libro
         ejemplar.save()
         return super().form_valid(form)
-    
-class MultaCreateView(CreateView):
-    model = Multa
-    template_name = "inventario/crear/crear_multa.html"
-    fields=('__all__')
 
-    success_url= reverse_lazy('app_inventario:inicio')
 
 @method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class PrestamoCreateView(CreateView, FormMixin):

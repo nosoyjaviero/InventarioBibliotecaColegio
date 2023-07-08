@@ -216,40 +216,7 @@ class Prestamo(models.Model):
         else:
             return "En préstamo"
 
-class Multa(models.Model):
-    """
-    Representa la multa por un préstamo de un ejemplar de un libro.
 
-    Args:
-        models (type): Clase padre de la clase Multa en Django.
-
-    Attributes:
-        prestamo (ForeignKey): Ejemplar prestado a un usuario.
-        fecha_emision (DateField): Fecha de emisión de la multa.
-        monto (DecimalField): Monto de la multa.
-        opciones_estado (tuple): Opciones para el estado de la multa.
-        estado (CharField): Estado actual de la multa.
-
-    Methods:
-        __str__(): Devuelve la representación en cadena de la multa.
-    """
-    prestamo = models.ForeignKey(Prestamo, on_delete=models.CASCADE)
-    fecha_emision = models.DateField()
-    monto = models.DecimalField(max_digits=8, decimal_places=2)
-    opciones_estado = [
-        ('pagado', 'Pagado'),
-        ('no_pagado', 'No Pagado'),
-    ]
-    estado = models.CharField(max_length=10, choices=opciones_estado)
-    
-    def __str__(self):
-        """
-        Devuelve la representación en cadena de la multa.
-
-        Returns:
-            str: Representación en cadena de la multa.
-        """
-        return f"{self.prestamo.usuario} - Estado: {self.estado} Libro:{self.prestamo.ejemplar.libro}" 
         
         
 # @receiver(models.signals.post_save, sender=Prestamo)
