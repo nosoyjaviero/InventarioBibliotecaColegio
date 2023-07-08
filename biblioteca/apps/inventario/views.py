@@ -120,6 +120,7 @@ class libros_prestados(ListView):
                   
 @method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class Inicio(ListView):
+    
     template_name= 'inicio.html'
     model=Libro
     context_object_name= 'prestamos'
