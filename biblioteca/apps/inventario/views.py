@@ -152,15 +152,17 @@ class ListaDeLibros(ListView):
     
 @method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')
 class ListaDeEjemplares(ListView):
-    template_name= 'inventario/listar/ejemplares.html'
-    # model=Ejemplar
-    context_object_name= 'ejemplares'
-    paginate_by=6
-    ordering='libro__titulo'
+    template_name = 'inventario/listar/ejemplares.html'
+    context_object_name = 'ejemplares'
+    paginate_by = 6
+    ordering = 'libro__titulo'
+
     def get_queryset(self):
         palabra_clave = self.request.GET.get("kword", '') 
-        lista =Ejemplar.objects.filter(
-            libro__titulo__icontains=palabra_clave)       
+        lista = Ejemplar.objects.filter(
+            Q(libro__titulo__icontains=palabra_clave) |  # Búsqueda por título
+            Q(asignatura__icontains=palabra_clave)  # Búsqueda por asignatura
+        )
         return lista
     
 @method_decorator(login_required(login_url='app_inventario:login'), name='dispatch')

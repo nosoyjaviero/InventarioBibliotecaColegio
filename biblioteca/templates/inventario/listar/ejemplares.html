@@ -46,67 +46,67 @@ Ejemplares
   <li class="list-group-item">ID: {{ ejemplar.id }}</li>
   {% endif %}
 
-  {% if ejemplar.libro.autor %}
+  {% comment %} {% if ejemplar.libro.autor %}
     <li class="list-group-item">Autor: {{ ejemplar.libro.autor }}</li>
-    {% endif %} 
+    {% endif %}  {% endcomment %}
 
 
     {% if ejemplar.estado %}
     <li class="list-group-item">Estado: {{ ejemplar.estado }}</li>
     {% endif %}
 
-    {% if ejemplar.fecha_adquisicion %}
+    {% comment %} {% if ejemplar.fecha_adquisicion %}
     <li class="list-group-item">Fecha de adquisición: {{ ejemplar.fecha_adquisicion }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.isbn %}
+    {% comment %} {% if ejemplar.isbn %}
     <li class="list-group-item">ISBN: {{ ejemplar.isbn }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.ultima_revision %}
+    {% comment %} {% if ejemplar.ultima_revision %}
     <li class="list-group-item">Última revisión: {{ ejemplar.ultima_revision }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     {% if ejemplar.cantidad %}
     <li class="list-group-item">Cantidad: {{ ejemplar.cantidad }}</li>
     {% endif %}
 
-    {% if ejemplar.ano_aquision %}
+    {% comment %} {% if ejemplar.ano_aquision %}
     <li class="list-group-item">Año de adquisición: {{ ejemplar.ano_aquision }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.edicion %}
+    {% comment %} {% if ejemplar.edicion %}
     <li class="list-group-item">Edición: {{ ejemplar.edicion }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.año_publicacion %}
+    {% comment %} {% if ejemplar.año_publicacion %}
     <li class="list-group-item">Año de publicación: {{ ejemplar.año_publicacion }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.editorial %}
+    {% comment %} {% if ejemplar.editorial %}
     <li class="list-group-item">Editorial: {{ ejemplar.editorial }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
     
-    {% if ejemplar.dewey %}
+    {% comment %} {% if ejemplar.dewey %}
     <li class="list-group-item">Dewey: {{ ejemplar.dewey }}</li>
     {% endif %}
 
     {% if ejemplar.cutter %}
     <li class="list-group-item">Cutter: {{ ejemplar.cutter }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
 
     {% if ejemplar.asignatura %}
     <li class="list-group-item">Asignatura: {{ ejemplar.asignatura }}</li>
     {% endif %}
 
-    {% if ejemplar.comentarios %}
+    {% comment %} {% if ejemplar.comentarios %}
     <li class="list-group-item">Comentarios: {{ ejemplar.comentarios }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 
-    {% if ejemplar.ubicacion %}
+    {% comment %} {% if ejemplar.ubicacion %}
     <li class="list-group-item">Ubicación: {{ ejemplar.ubicacion }}</li>
-    {% endif %}
+    {% endif %} {% endcomment %}
 </ul>
 <li class="list-group-item">
 
